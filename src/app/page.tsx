@@ -31,6 +31,10 @@ export default function Home() {
         </div>
         <div className="space-y-3 text-base leading-relaxed text-neutral-600 dark:text-neutral-300 max-w-xl">
           <p>
+            문제의 핵심을 정의하고, 기술로 비즈니스의 병목을 해결하는
+            프론트엔드 개발자입니다.
+          </p>
+          <p>
             단순히 주어진 기능을 구현하는 것에서 멈추지 않고,
             &apos;왜 이걸 만드는가&apos;를 먼저 묻습니다. 창업을 통해 기획자·세일즈·개발자
             역할을 동시에 경험하면서, 비즈니스 맥락 없는 개발은 방향을 잃기
