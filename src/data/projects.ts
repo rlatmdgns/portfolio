@@ -167,7 +167,7 @@ export const projects: Project[] = [
     results: [
       "Lighthouse 성능 점수 70 → 90 개선",
       "저사양 기기에서 온실맵 렌더링 지연 시간 30% 감소",
-      "런타임 타입 관련 버그 70% 감소",
+      "런타임 타입 관련 버그 30% 감소",
     ],
     tags: ["IoT", "데이터 시각화", "성능 최적화", "TypeScript 마이그레이션"],
   },
