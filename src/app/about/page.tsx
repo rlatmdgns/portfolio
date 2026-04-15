@@ -13,13 +13,13 @@ const experiences = [
     company: "풀랩",
     period: "2023.04 ~ 2024.12",
     role: "프론트엔드 챕터 리드",
-    note: "경영악화로 인한 폐업",
+    note: "서비스 종료",
   },
   {
     company: "하비풀",
     period: "2022.05 ~ 2023.02",
     role: "커머스팀 팀원",
-    note: "경영악화로 인한 폐업",
+    note: "서비스 종료",
   },
   {
     company: "아이오크롭스",
@@ -32,8 +32,17 @@ const experiences = [
 export default function AboutPage() {
   return (
     <div className="space-y-16">
+      {/* Hero */}
       <div className="space-y-2">
-        <h1 className="text-2xl font-bold tracking-tight">소개</h1>
+        <p className="text-sm text-neutral-500 dark:text-neutral-400">
+          Frontend Developer
+        </p>
+        <h1 className="text-3xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">
+          김승훈
+        </h1>
+        <p className="text-sm text-neutral-500 dark:text-neutral-400">
+          마주한 문제를 그냥 넘기지 않는 프론트엔드 개발자
+        </p>
       </div>
 
       {/* Bio */}
@@ -44,25 +53,28 @@ export default function AboutPage() {
         <div className="space-y-4 text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed">
           {/* 브랜딩 도입 */}
           <p>
-            사용자와 비즈니스를 함께 생각하는 프론트엔드 개발자 김승훈입니다.
+            마주한 문제를 그냥 넘기지 않는 프론트엔드 개발자 김승훈입니다.
           </p>
-          {/* 가치관 + 문제 인식 */}
+          {/* 가치관 + 문제인식 */}
           <p>
-            기능을 구현할 때 사용자 경험과 지속 가능성을 함께 고민하려 노력합니다.
-            창업을 통해 기획·세일즈·개발을 동시에 경험하면서,
-            &apos;왜 만드는가&apos;를 먼저 이해하는 것이 더 좋은 제품으로 이어진다는 걸
-            배웠습니다.
+            단순 기능 구현에 그치지 않고, 코드가 만들어내는 사용자 경험과
+            시스템의 지속 가능성까지 고민합니다.
+            제품을 직접 만들고 운영한 경험 덕분에 요구사항 뒤의 맥락을 읽고
+            개발에 반영하는 관점을 갖게 됐습니다.
           </p>
           {/* 실적 요약 */}
           <p>
-            팀과 함께 순환 참조 46% 제거, LCP 30% 개선에 기여했고,
-            창업한 B2B SaaS에서는 고객사 조기 퇴사율 15% 감소라는
-            비즈니스 성과로 이어질 수 있었습니다.
+            Next.js 기반 모노레포 전환을 주도하며 순환 참조 46% 제거,
+            Lighthouse 기준 LCP 30% 개선을 이뤄냈습니다.
+            창업한 서비스에서 온보딩 플로우를 직접 개발해
+            고객사 조기 퇴사율 15% 감소라는 비즈니스 성과로 연결했고,
+            챕터 리드로서 PoC 검증과 팀 내 공유를 통해
+            기술 도입을 합의 기반으로 이끌었습니다.
           </p>
           {/* 미래 방향 */}
           <p>
-            앞으로도 기술과 협업을 통해 팀의 방향을 함께 고민하고,
-            더 나은 제품을 만드는 데 기여하고 싶습니다.
+            기술과 협업을 통해 사용자와 비즈니스 모두에 임팩트를 주는
+            제품을 만드는 데 집중하겠습니다.
           </p>
         </div>
       </section>
