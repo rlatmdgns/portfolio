@@ -29,12 +29,19 @@ export default function Home() {
             김승훈
           </h1>
         </div>
-        <p className="text-base leading-relaxed text-neutral-600 dark:text-neutral-300 max-w-xl">
-          문제의 핵심을 정의하고, 기술로 비즈니스의 병목을 해결하는
-          프론트엔드 개발자입니다. B2B SaaS 창업 경험을 통해 사용자 인터뷰,
-          가설 검증, 문제 정의까지 제품의 시작부터 성장 과정 전체를 경험하며
-          &apos;무엇을 왜 만드는지&apos;에 대한 관점을 체득했습니다.
-        </p>
+        <div className="space-y-3 text-base leading-relaxed text-neutral-600 dark:text-neutral-300 max-w-xl">
+          <p>
+            단순히 주어진 기능을 구현하는 것에서 멈추지 않고,
+            &apos;왜 이걸 만드는가&apos;를 먼저 묻습니다. 창업을 통해 기획자·세일즈·개발자
+            역할을 동시에 경험하면서, 비즈니스 맥락 없는 개발은 방향을 잃기
+            쉽다는 걸 직접 체감했습니다.
+          </p>
+          <p>
+            리드 개발자로서 순환 참조 46% 제거, LCP 30% 개선을 주도했고,
+            창업한 B2B SaaS에서는 고객사 조기 퇴사율 15% 감소라는 실제
+            비즈니스 성과를 만들었습니다.
+          </p>
+        </div>
         <div className="flex gap-4 pt-1">
           <a
             href="https://github.com/rlatmdgns"
