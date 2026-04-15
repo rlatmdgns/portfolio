@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { projects } from "@/data/projects";
+import MermaidDiagram from "@/components/MermaidDiagram";
 
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));
@@ -30,7 +32,7 @@ export default async function ProjectDetailPage({
   if (!project) notFound();
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-16">
       {/* Back */}
       <Link
         href="/projects"
@@ -40,14 +42,14 @@ export default async function ProjectDetailPage({
       </Link>
 
       {/* Header */}
-      <div className="space-y-3">
+      <div className="space-y-4">
         <div className="flex items-center gap-2 flex-wrap">
           <h1 className="text-2xl font-bold tracking-tight">{project.name}</h1>
           <span className="text-sm text-neutral-400 bg-neutral-100 dark:bg-neutral-800 dark:text-neutral-500 px-2.5 py-1 rounded-full">
             {project.company}
           </span>
         </div>
-        <p className="text-neutral-500 dark:text-neutral-400">
+        <p className="text-neutral-500 dark:text-neutral-400 leading-relaxed">
           {project.description}
         </p>
         <div className="flex flex-wrap gap-1.5">
@@ -60,9 +62,21 @@ export default async function ProjectDetailPage({
             </span>
           ))}
         </div>
-        <p className="text-xs text-neutral-400 dark:text-neutral-500 pt-1">
+        <p className="text-xs text-neutral-400 dark:text-neutral-500">
           {project.period} · {project.role}
         </p>
+      </div>
+
+      {/* Preview Image */}
+      <div className="rounded-xl overflow-hidden border border-neutral-100 dark:border-neutral-800">
+        <Image
+          src={project.image}
+          alt={`${project.name} 스크린샷`}
+          width={1200}
+          height={800}
+          className="w-full h-auto"
+          priority
+        />
       </div>
 
       {/* Tech Stack */}
@@ -79,47 +93,79 @@ export default async function ProjectDetailPage({
         </div>
       </Section>
 
-      {/* Key Role */}
-      <Section title="핵심 역할">
-        <p className="text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed">
-          {project.keyRole}
-        </p>
+      {/* Architecture */}
+      <Section title="아키텍처">
+        <div className="space-y-4">
+          <p className="text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed">
+            {project.architecture.description}
+          </p>
+          <MermaidDiagram chart={project.architecture.diagram} />
+        </div>
       </Section>
 
-      {/* Issues */}
-      <Section title="문제 상황">
-        <ul className="space-y-2">
-          {project.issues.map((issue, i) => (
-            <li key={i} className="flex gap-3 text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed">
-              <span className="text-neutral-300 dark:text-neutral-600 shrink-0 mt-0.5">—</span>
-              <span>{issue}</span>
-            </li>
+      {/* Key Features */}
+      <Section title="핵심 기능">
+        <div className="space-y-5">
+          {project.keyFeatures.map((feature, i) => (
+            <div key={i} className="space-y-1.5">
+              <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                {feature.title}
+              </h3>
+              <p className="text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed">
+                {feature.description}
+              </p>
+            </div>
           ))}
-        </ul>
+        </div>
       </Section>
 
-      {/* Reasons */}
-      <Section title="기술 선택 이유">
-        <ul className="space-y-2">
-          {project.reasons.map((reason, i) => (
-            <li key={i} className="flex gap-3 text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed">
-              <span className="text-neutral-300 dark:text-neutral-600 shrink-0 mt-0.5">—</span>
-              <span>{reason}</span>
-            </li>
+      {/* Technical Decisions */}
+      <Section title="기술적 의사결정">
+        <div className="space-y-6">
+          {project.decisions.map((decision, i) => (
+            <div
+              key={i}
+              className="border border-neutral-100 dark:border-neutral-800 rounded-lg p-4 space-y-3"
+            >
+              <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                {decision.title}
+              </h3>
+              <div className="space-y-2">
+                <div className="flex gap-3 text-sm">
+                  <span className="text-neutral-400 dark:text-neutral-500 shrink-0 w-10">문제</span>
+                  <p className="text-neutral-600 dark:text-neutral-300 leading-relaxed">{decision.problem}</p>
+                </div>
+                <div className="flex gap-3 text-sm">
+                  <span className="text-neutral-400 dark:text-neutral-500 shrink-0 w-10">선택</span>
+                  <p className="text-neutral-600 dark:text-neutral-300 leading-relaxed">{decision.choice}</p>
+                </div>
+              </div>
+            </div>
           ))}
-        </ul>
+        </div>
       </Section>
 
-      {/* Solutions */}
-      <Section title="해결 방법">
-        <ul className="space-y-2">
-          {project.solutions.map((solution, i) => (
-            <li key={i} className="flex gap-3 text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed">
-              <span className="text-neutral-300 dark:text-neutral-600 shrink-0 mt-0.5">—</span>
-              <span>{solution}</span>
-            </li>
+      {/* Troubleshooting */}
+      <Section title="트러블슈팅">
+        <div className="space-y-6">
+          {project.troubleshooting.map((item, i) => (
+            <div key={i} className="space-y-3">
+              <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                {item.issue}
+              </h3>
+              <div className="space-y-2 pl-4 border-l-2 border-neutral-100 dark:border-neutral-800">
+                <div className="flex gap-3 text-sm">
+                  <span className="text-neutral-400 dark:text-neutral-500 shrink-0 w-10">원인</span>
+                  <p className="text-neutral-600 dark:text-neutral-300 leading-relaxed">{item.cause}</p>
+                </div>
+                <div className="flex gap-3 text-sm">
+                  <span className="text-neutral-400 dark:text-neutral-500 shrink-0 w-10">해결</span>
+                  <p className="text-neutral-600 dark:text-neutral-300 leading-relaxed">{item.solution}</p>
+                </div>
+              </div>
+            </div>
           ))}
-        </ul>
+        </div>
       </Section>
 
       {/* Results */}
@@ -145,7 +191,7 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section className="space-y-3">
+    <section className="space-y-4">
       <h2 className="text-xs font-semibold uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
         {title}
       </h2>
