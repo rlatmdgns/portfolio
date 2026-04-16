@@ -40,17 +40,17 @@ export default function AboutPage() {
         <h1 className="text-3xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">
           김승훈
         </h1>
-        <p className="text-sm text-neutral-500 dark:text-neutral-400">
+        <p className="text-sm text-neutral-500 dark:text-neutral-300">
           마주한 문제를 그냥 넘기지 않는 프론트엔드 개발자
         </p>
       </div>
 
       {/* Bio */}
       <section className="space-y-4">
-        <h2 className="text-xs font-semibold uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
+        <h2 className="text-xs font-semibold uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
           About
         </h2>
-        <div className="space-y-4 text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed">
+        <div className="space-y-4 text-sm text-neutral-600 dark:text-neutral-200 leading-relaxed">
           {/* 브랜딩 도입 */}
           <p>
             마주한 문제를 그냥 넘기지 않는 프론트엔드 개발자 김승훈입니다.
@@ -81,7 +81,7 @@ export default function AboutPage() {
 
       {/* Experience */}
       <section className="space-y-4">
-        <h2 className="text-xs font-semibold uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
+        <h2 className="text-xs font-semibold uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
           Experience
         </h2>
         <div className="space-y-0">
@@ -91,7 +91,7 @@ export default function AboutPage() {
               className="flex gap-8 py-4 border-b border-neutral-100 dark:border-neutral-800 last:border-0"
             >
               <div className="w-36 shrink-0">
-                <p className="text-xs text-neutral-400 dark:text-neutral-500 leading-relaxed">
+                <p className="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
                   {exp.period}
                 </p>
               </div>
@@ -99,11 +99,11 @@ export default function AboutPage() {
                 <p className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
                   {exp.company}
                 </p>
-                <p className="text-sm text-neutral-500 dark:text-neutral-400">
+                <p className="text-sm text-neutral-600 dark:text-neutral-300">
                   {exp.role}
                 </p>
                 {exp.note && (
-                  <p className="text-xs text-neutral-400 dark:text-neutral-500">
+                  <p className="text-xs text-neutral-500 dark:text-neutral-400">
                     {exp.note}
                   </p>
                 )}
@@ -115,7 +115,7 @@ export default function AboutPage() {
 
       {/* Contact */}
       <section className="space-y-4">
-        <h2 className="text-xs font-semibold uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
+        <h2 className="text-xs font-semibold uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
           Contact
         </h2>
         <div className="space-y-2">

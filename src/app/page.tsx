@@ -22,14 +22,14 @@ export default function Home() {
       {/* Hero */}
       <section className="space-y-5">
         <div className="space-y-2">
-          <p className="text-sm text-neutral-500 dark:text-neutral-400">
+          <p className="text-sm text-neutral-500 dark:text-neutral-300">
             Frontend Developer
           </p>
           <h1 className="text-3xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">
             김승훈
           </h1>
         </div>
-        <div className="space-y-3 text-base leading-relaxed text-neutral-600 dark:text-neutral-300 max-w-xl">
+        <div className="space-y-4 text-base leading-relaxed text-neutral-600 dark:text-neutral-200 max-w-xl">
           <p>
             마주한 문제를 그냥 넘기지 않는 프론트엔드 개발자입니다.
             단순 기능 구현에 그치지 않고, 코드가 만들어내는 사용자 경험과
@@ -46,7 +46,7 @@ export default function Home() {
             href="https://github.com/rlatmdgns"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
+            className="text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
           >
             GitHub →
           </a>
@@ -54,13 +54,13 @@ export default function Home() {
             href="https://www.linkedin.com/in/승훈-김-161407216/"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
+            className="text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
           >
             LinkedIn →
           </a>
           <a
             href="mailto:rlatmdgns3076@gmail.com"
-            className="text-sm text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
+            className="text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
           >
             Email →
           </a>
@@ -69,20 +69,20 @@ export default function Home() {
 
       {/* Skills */}
       <section className="space-y-4">
-        <h2 className="text-sm font-semibold uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
+        <h2 className="text-xs font-semibold uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
           Skills
         </h2>
         <div className="space-y-3">
           {Object.entries(skills).map(([category, items]) => (
             <div key={category} className="flex gap-4 items-start">
-              <span className="text-sm text-neutral-400 dark:text-neutral-500 w-36 shrink-0 pt-0.5">
+              <span className="text-sm text-neutral-600 dark:text-neutral-300 w-36 shrink-0 pt-0.5">
                 {category}
               </span>
               <div className="flex flex-wrap gap-2">
                 {items.map((item) => (
                   <span
                     key={item}
-                    className="text-sm px-2.5 py-0.5 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300"
+                    className="text-sm px-2.5 py-0.5 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-200 border border-neutral-200 dark:border-neutral-700"
                   >
                     {item}
                   </span>
@@ -96,7 +96,7 @@ export default function Home() {
       {/* Projects */}
       <section className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
+          <h2 className="text-xs font-semibold uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
             Projects
           </h2>
           <Link
@@ -116,18 +116,18 @@ export default function Home() {
               <div className="flex items-start justify-between gap-4 py-3 border-b border-neutral-100 dark:border-neutral-800 group-hover:border-neutral-300 dark:group-hover:border-neutral-600 transition-colors">
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium text-neutral-900 dark:text-neutral-100 group-hover:text-neutral-700 dark:group-hover:text-neutral-300 transition-colors">
+                    <span className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 group-hover:text-neutral-700 dark:group-hover:text-neutral-300 transition-colors">
                       {project.name}
                     </span>
-                    <span className="text-xs text-neutral-400 dark:text-neutral-500">
+                    <span className="text-xs text-neutral-500 dark:text-neutral-400">
                       {project.company}
                     </span>
                   </div>
-                  <p className="text-sm text-neutral-500 dark:text-neutral-400 line-clamp-1">
+                  <p className="text-sm text-neutral-500 dark:text-neutral-300 line-clamp-1">
                     {project.description}
                   </p>
                 </div>
-                <span className="text-sm text-neutral-400 dark:text-neutral-500 shrink-0 pt-0.5 group-hover:translate-x-0.5 transition-transform">
+                <span className="text-sm text-neutral-400 dark:text-neutral-400 shrink-0 pt-0.5 group-hover:translate-x-0.5 transition-transform">
                   →
                 </span>
               </div>

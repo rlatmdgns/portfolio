@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Nav from "@/components/Nav";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 export const metadata: Metadata = {
   title: "김승훈 | Frontend Developer",
@@ -20,10 +21,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ko">
+    <html lang="ko" suppressHydrationWarning>
       <body className="min-h-screen bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100">
-        <Nav />
-        <main className="max-w-3xl mx-auto px-6 py-16">{children}</main>
+        <ThemeProvider>
+          <Nav />
+          <main className="max-w-3xl mx-auto px-6 py-16">{children}</main>
+        </ThemeProvider>
       </body>
     </html>
   );

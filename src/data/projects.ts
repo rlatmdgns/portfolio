@@ -280,19 +280,40 @@ export const projects: Project[] = [
     keyRole: "커머스 서비스 고도화 및 신규 기능 개발, 어드민 개발",
     architecture: {
       description:
-        "Next.js Pages Router 기반의 Template 패턴 아키텍처. 각 페이지는 라우팅만 담당하고 실제 UI와 로직은 templates/ 폴더의 Template 컴포넌트에 위임. 각 Template은 자체 hook과 스타일을 함께 관리. 서버 상태는 TanStack Query, API 통신은 커스텀 ApiService 레이어로 추상화.",
+        "Next.js Pages Router 기반의 Atomic Design 패턴 아키텍처. atoms → molecules → organisms → templates → pages 5계층 구조로 UI를 조합. pages는 라우팅만 담당하고, templates가 전체 레이아웃과 로직을 조율. organisms은 molecules와 atoms를 조합한 독립 UI 블록으로 구성. 서버 상태는 TanStack Query, API 통신은 커스텀 ApiService 레이어로 추상화.",
       diagram: `graph TD
   subgraph "Pages Router"
-    P1[pages/index] --> T1[HomeTemplate]
-    P2[pages/products] --> T2[ProductTemplate]
-    P3[pages/cart] --> T3[CartTemplate]
-    P4["pages/cart/checkout"] --> T4[OrderCheckoutTemplate]
-    P5["pages/products/id"] --> T5[ProductDetailTemplate]
+    P1[pages/index]
+    P2[pages/products]
+    P3[pages/cart]
+    P4["pages/products/[id]"]
   end
 
-  subgraph "Template 레이어"
-    T3 --> H3[CartTemplate.hook]
-    T5 --> H5[ProductContext]
+  subgraph "Templates"
+    T1[HomeTemplate]
+    T2[ProductListTemplate]
+    T3[CartTemplate]
+    T4[ProductDetailTemplate]
+  end
+
+  subgraph "Organisms"
+    O1[ProductCard]
+    O2[CartItem]
+    O3[CheckoutSummary]
+    O4[ProductDetail]
+  end
+
+  subgraph "Molecules"
+    M1[PriceTag]
+    M2[QuantitySelector]
+    M3[ImageGallery]
+  end
+
+  subgraph "Atoms"
+    A1[Button]
+    A2[Input]
+    A3[Badge]
+    A4[Image]
   end
 
   subgraph "공통 레이어"
@@ -301,8 +322,22 @@ export const projects: Project[] = [
     AUTH[NextAuth]
   end
 
-  T1 & T2 & T3 & T4 & T5 --> API
-  T1 & T2 & T3 & T4 & T5 --> QUERY`,
+  P1 --> T1
+  P2 --> T2
+  P3 --> T3
+  P4 --> T4
+
+  T1 & T2 --> O1
+  T3 --> O2 & O3
+  T4 --> O4
+
+  O1 & O2 --> M1 & M2
+  O4 --> M3
+
+  M1 & M2 & M3 --> A1 & A2 & A3 & A4
+
+  T1 & T2 & T3 & T4 --> API
+  T1 & T2 & T3 & T4 --> QUERY`,
     },
     keyFeatures: [
       {
