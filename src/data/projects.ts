@@ -200,12 +200,17 @@ export const projects: Project[] = [
       {
         title: "design token 기반 스타일 시스템",
         description:
-          "styled-components 제거 후 vanilla-extract 도입 시 단순 교체 대신 design token 기반 스타일 시스템 전면 재설계. recipe API로 variant 기반 컴포넌트 스타일 시스템을 구성하고 Storybook으로 문서화.",
+          "컴포넌트 파편화와 디자인-개발 간 언어 불일치 문제를 해결하기 위해 디자이너와 함께 design token 체계를 공동 설계. primary-400 같은 스케일 기반 대신 size-xs 같은 시맨틱 네이밍으로 학습 곡선을 낮춰 디자이너·기획자도 바로 이해할 수 있는 공통 언어를 만들었고, vanilla-extract recipe API로 variant 기반 컴포넌트 스타일 시스템을 구성. Storybook으로 컴포넌트 카탈로그와 동작 흐름을 문서화해 개발자·디자이너·기획자가 배포 전 동일한 기준으로 컴포넌트를 조합하고 소통하는 환경을 구축.",
       },
       {
         title: "페이지 성격별 렌더링 전략 매트릭스",
         description:
           "채용 공고(SSG/ISR), 지원자 현황(SSR), 대시보드(CSR) 등 페이지 성격에 따라 렌더링 전략을 분리 적용. App Router 기반 서버/클라이언트 컴포넌트 분리 및 data fetching 서버 이동으로 hydration 비용 감소.",
+      },
+      {
+        title: "PoC 기반 기술 도입 및 개발 문화 구축",
+        description:
+          "FSD·vanilla-extract 등 굵직한 기술 전환을 모두 PoC → 팀 공유 → 합의 순서로 진행. 독단적 결정 없이 팀 전체가 맥락을 이해한 상태에서 도입해 실제 적용 시 마찰을 최소화했습니다. 정기 스터디와 코드 리뷰 문화도 직접 만들어 팀 기술 이해도와 코드 품질을 함께 끌어올렸습니다.",
       },
       {
         title: "PDF 이력서 마스킹 처리",
@@ -235,6 +240,13 @@ export const projects: Project[] = [
         choice:
           "참조 방향을 코드 레벨에서 강제하는 FSD + eslint-plugin-boundaries 조합 선택. 규칙 위반 시 빌드가 실패해 팀 합의 없이는 레이어 규칙을 어길 수 없는 구조를 만들었습니다.",
       },
+      {
+        title: "release 태그 기반 프로덕션 배포",
+        problem:
+          "main 병합 즉시 프로덕션에 자동 배포되면 고객사 데이터를 다루는 채용 시스템 특성상 검증되지 않은 변경이 운영에 반영될 위험이 있었습니다.",
+        choice:
+          "PR → GitHub Actions CI(타입 체크·린트) → main 병합 시 개발 서버 자동 배포 → release 태그 업데이트로 프로덕션 배포를 트리거하는 단계별 파이프라인을 구성. 개발 서버에서 QA를 거친 후 릴리즈를 결정할 수 있어 의도치 않은 프로덕션 배포를 방지하고 롤백도 태그 단위로 명확하게 관리했습니다.",
+      },
     ],
     troubleshooting: [
       {
@@ -243,6 +255,13 @@ export const projects: Project[] = [
           "레포 간 공통 코드를 각자 복사해 사용하면서 변경 시 영향 범위 추적이 불가능해졌습니다.",
         solution:
           "dependency-cruiser로 순환 참조 131건을 시각화하고, Turborepo 모노레포 + FSD 단방향 레이어 구조로 전환. eslint-plugin-boundaries로 순환 참조 46% 제거 후 신규 발생을 원천 차단했습니다.",
+      },
+      {
+        issue: "컴포넌트 파편화로 배포 후 디자이너 의도와 다른 결과물 반복",
+        cause:
+          "공통 기준 없이 각자 개발하다 보니 어떤 컴포넌트가 존재하는지 파악이 안 됐고, 배포 후에야 디자이너가 의도한 것과 다른 결과물이 나오는 일이 반복됐습니다.",
+        solution:
+          "디자이너와 함께 시맨틱 네이밍 기반 design token 체계를 공동 설계하고, Storybook으로 컴포넌트 카탈로그와 동작 흐름을 문서화. 개발자·디자이너·기획자가 배포 전 동일한 컴포넌트 기준으로 소통할 수 있게 되어 배포 후 디자인 불일치 이슈를 제거했습니다.",
       },
       {
         issue: "SPA 구조로 SEO 불가 + CSS-in-JS 런타임 비용으로 성능 저하",
