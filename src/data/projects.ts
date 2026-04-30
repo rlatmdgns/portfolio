@@ -51,7 +51,7 @@ export const projects: Project[] = [
     keyRole: "제품 기획부터 프론트엔드 설계/구현, 세일즈까지 전 단계 직접 주도",
     architecture: {
       description:
-        "feature 단위 자체 완결 구조. 각 feature는 api/components/hooks/store/types를 독립적으로 소유하며 cross-feature 의존성을 구조적으로 차단합니다. App Router + [locale] 동적 라우팅으로 다국어(next-intl)를 지원하고, Zustand store를 feature 스코프로 격리해 전역 상태 오염을 방지합니다.",
+        "feature 단위 자체 완결 구조. 각 feature는 api/components/hooks/store/types를 독립적으로 소유하며 cross-feature 의존성을 구조적으로 차단합니다. eslint-plugin-boundaries로 레이어 간 잘못된 참조를 빌드 타임에 자동 감지해 컨벤션이 아닌 규칙으로 강제합니다. App Router + [locale] 동적 라우팅으로 다국어(next-intl)를 지원하고, Zustand store를 feature 스코프로 격리해 전역 상태 오염을 방지합니다.",
       diagram: `graph TD
   subgraph "App Router"
     A["[locale] layout"] --> B[workspaces]
@@ -115,7 +115,7 @@ export const projects: Project[] = [
         problem:
           "기능이 늘면서 어떤 컴포넌트가 어디에 쓰이는지 추적이 어려워지고, 변경 시 사이드 이펙트 범위를 예측하기 힘들어졌습니다.",
         choice:
-          "각 feature가 api/components/hooks/store/types를 독립적으로 소유하는 자체 완결 구조를 설계. cross-feature 의존성을 구조적으로 차단해 변경 범위를 feature 단위로 명확히 격리했습니다.",
+          "각 feature가 api/components/hooks/store/types를 독립적으로 소유하는 자체 완결 구조를 설계. cross-feature 의존성을 구조적으로 차단해 변경 범위를 feature 단위로 명확히 격리했고, eslint-plugin-boundaries로 잘못된 참조를 빌드 타임에 자동 감지해 컨벤션이 아닌 규칙으로 강제했습니다.",
       },
       {
         title: "Zustand store feature 스코프 격리",
