@@ -48,7 +48,7 @@ export const projects: Project[] = [
       "react-hook-form",
       "next-intl",
     ],
-    keyRole: "제품 기획부터 프론트엔드 설계/구현, 세일즈까지 전 과정 주도",
+    keyRole: "제품 기획부터 프론트엔드 설계/구현, 세일즈까지 전 단계 직접 주도",
     architecture: {
       description:
         "feature 단위 자체 완결 구조. 각 feature는 api/components/hooks/store/types를 독립적으로 소유하며 cross-feature 의존성을 구조적으로 차단합니다. App Router + [locale] 동적 라우팅으로 다국어(next-intl)를 지원하고, Zustand store를 feature 스코프로 격리해 전역 상태 오염을 방지합니다.",
@@ -94,7 +94,7 @@ export const projects: Project[] = [
       {
         title: "멀티테넌트 동적 테마 시스템",
         description:
-          "고객사별 브랜드 컬러를 SSR 환경에서 FOUC 없이 적용. CSS Custom Properties + color-mix() 함수로 50~950 10단계 컬러 팔레트를 자동 생성하고, YIQ 공식으로 텍스트 대비 색상을 자동 계산해 접근성을 보장. <head> 인라인 스크립트 주입으로 렌더링 전 CSS 변수를 선적용.",
+          "고객사별 브랜드 컬러를 SSR 환경에서 FOUC 없이 적용. CSS Custom Properties + color-mix() 함수로 50~950 10단계 컬러 팔레트를 자동 생성하고, YIQ 공식으로 텍스트 대비 색상을 자동 계산해 접근성을 보장. ThemeProvider를 server component로 구성해 `<style>` 태그에 CSS 변수를 SSR 렌더링하고, 테마 변경 시 router.refresh()로 페이지 새로고침 없이 즉시 반영.",
       },
       {
         title: "12종 질문 입력 타입",
@@ -108,7 +108,7 @@ export const projects: Project[] = [
         problem:
           "CSS-in-JS는 런타임에 스타일을 생성해 SSR 환경에서 FOUC가 발생하고, 고객사별 브랜드 컬러를 동적으로 바꾸는 멀티테넌트 요구사항을 처리하기 어려웠습니다.",
         choice:
-          "CSS Custom Properties를 선택. 런타임 JS 비용 없이 CSS 변수만 교체해 전체 팔레트를 즉시 반영 가능하고, <head> 인라인 스크립트로 렌더링 전 변수를 선적용해 FOUC를 원천 차단했습니다.",
+          "CSS Custom Properties를 선택. 런타임 JS 비용 없이 CSS 변수만 교체해 전체 팔레트를 즉시 반영 가능하고, ThemeProvider를 server component로 구성해 `<style>` 태그에 CSS 변수를 SSR 렌더링함으로써 hydration 이전 시점에 테마가 적용되도록 해 FOUC를 원천 차단했습니다.",
       },
       {
         title: "Feature 단위 아키텍처",
@@ -138,12 +138,12 @@ export const projects: Project[] = [
         cause:
           "컴포넌트 마운트 후 JS로 CSS 변수를 설정하면 서버에서 렌더링된 기본 색상이 먼저 노출된 뒤 고객사 색상으로 교체되는 깜빡임이 발생했습니다.",
         solution:
-          "generateThemeScript() 함수로 고객사 색상을 담은 인라인 스크립트를 <head>에 주입해 HTML 파싱 시점에 CSS 변수를 선적용. 첫 번째 픽셀을 그리기 전에 팔레트 전체가 설정되어 FOUC를 완전히 제거했습니다.",
+          "ThemeProvider를 server component로 구성해 고객사 색상을 담은 CSS 변수를 `<style>` 태그로 SSR 렌더링. hydration 이전 시점에 팔레트가 적용되어 FOUC를 원천 차단했고, 테마 mutation 성공 시 router.refresh()로 server component 재렌더를 트리거해 페이지 새로고침 없이 즉시 반영되는 UX를 확보했습니다.",
       },
     ],
     results: [
       "고객사별 브랜드 컬러 커스터마이징 지원, FOUC 없는 SSR 환경 동적 테마 적용 달성",
-      "고객사 온보딩 반복 업무 자동화, 신규 입사자 조기 퇴사율 15% 감소",
+      "고객사 온보딩 반복 프로세스 자동화, 고객사 인사담당자 직접 피드백 기준 신규 입사자 조기 퇴사율 15% 감소",
     ],
     tags: ["창업", "B2B SaaS", "성능 최적화", "AI"],
   },
@@ -154,7 +154,7 @@ export const projects: Project[] = [
     role: "프론트엔드 챕터 리드 (4명)",
     name: "스테드",
     description:
-      "채용 공고 생성부터 이력서 필터링, 면접 일정 조율, 합격 통보까지 전 과정을 자동화하는 B2B SaaS ATS(채용 관리 시스템)",
+      "채용 공고 생성부터 이력서 필터링, 면접 일정 조율, 합격 통보까지 전 단계를 자동화하는 B2B SaaS ATS(채용 관리 시스템)",
     image: "/images/stead.png",
     techStack: [
       "Next.js",
@@ -274,7 +274,7 @@ export const projects: Project[] = [
     results: [
       "순환 참조 131건 중 60건 제거(46%↓), eslint-plugin-boundaries로 신규 순환 참조 발생 원천 차단",
       "LCP 약 30% 개선 (Lighthouse 기준), Core Web Vitals 전반 개선",
-      "디자인 시스템 구축으로 컴포넌트 재사용성 향상",
+      "디자인 시스템 구축으로 컴포넌트 재사용성 향상, 반복 구현 감소",
     ],
     tags: ["챕터 리드", "모노레포", "FSD", "아키텍처"],
   },
