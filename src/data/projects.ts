@@ -106,9 +106,9 @@ export const projects: Project[] = [
       {
         title: "CSS Custom Properties 기반 동적 테마",
         problem:
-          "CSS-in-JS는 런타임에 스타일을 생성해 SSR 환경에서 FOUC가 발생하고, 고객사별 브랜드 컬러를 동적으로 바꾸는 멀티테넌트 요구사항을 처리하기 어려웠습니다.",
+          "고객사별로 브랜드 컬러를 다르게 적용해야 하는 멀티테넌트 환경에서, 고객사 수만큼 빌드를 분리하면 운영 부담이 커지고, 클라이언트 런타임에 색상을 주입하면 서버 렌더링 결과와 충돌해 FOUC가 발생합니다.",
         choice:
-          "CSS Custom Properties를 선택. 런타임 JS 비용 없이 CSS 변수만 교체해 전체 팔레트를 즉시 반영 가능하고, ThemeProvider를 server component로 구성해 `<style>` 태그에 CSS 변수를 SSR 렌더링함으로써 hydration 이전 시점에 테마가 적용되도록 해 FOUC를 원천 차단했습니다.",
+          "단일 빌드로 N개 고객사 테마를 지원하면서 FOUC까지 차단하기 위해, ThemeProvider를 server component로 구성해 CSS Custom Properties를 `<style>` 태그에 SSR 인라인 주입하는 방식을 채택. hydration 이전 시점에 변수가 적용되어 FOUC를 원천 차단했고, 테마 변경 시에는 router.refresh()로 server component만 재렌더해 페이지 새로고침 없이 즉시 반영되도록 했습니다.",
       },
       {
         title: "Feature 단위 아키텍처",
