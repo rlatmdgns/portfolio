@@ -134,6 +134,13 @@ export const projects: Project[] = [
           "stable key(항목 고유 id) 기반 재정렬 알고리즘으로 전환하고, React.memo + selector 기반 상태 구독 최소화를 적용해 drag & drop 중에도 변경된 항목만 리렌더링되도록 최적화했습니다.",
       },
       {
+        issue: "AI 동적 태스크 생성 시 LLM 응답 비결정성으로 인한 런타임 에러",
+        cause:
+          "동일한 프롬프트에도 LLM 응답 구조가 매번 다르게 반환될 수 있어, 검증 없이 폼에 주입하면 필드 누락·타입 불일치로 런타임 에러가 발생합니다.",
+        solution:
+          "Few-shot 프롬프팅으로 응답 패턴을 고정해 일관성을 확보하고, Zod 스키마를 single source of truth로 두어 런타임에 응답을 검증. 검증 실패 시 fallback UI로 우회하고 Sentry로 비결정적 응답 패턴을 추적해 프롬프트를 점진적으로 개선했습니다.",
+      },
+      {
         issue: "SSR 환경에서 고객사 테마 색상 적용 시 FOUC 발생",
         cause:
           "컴포넌트 마운트 후 JS로 CSS 변수를 설정하면 서버에서 렌더링된 기본 색상이 먼저 노출된 뒤 고객사 색상으로 교체되는 깜빡임이 발생했습니다.",
