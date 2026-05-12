@@ -6,8 +6,8 @@ const experiences = [
   {
     company: "리프웍스",
     period: "2024.12 ~ 2026.03",
-    role: "공동창업 / 프론트엔드 전담",
-    note: "B2B SaaS 창업",
+    role: "본인 포함 공동창업 3인 / 프론트엔드 전담",
+    note: "공동창업",
   },
   {
     company: "풀랩",
