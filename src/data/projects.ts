@@ -35,7 +35,7 @@ export const projects: Project[] = [
     slug: "helloboard",
     company: "리프웍스",
     period: "2024.12 ~ 2026.03 (1년 3개월)",
-    role: "공동창업 3인 / 프론트엔드 전담",
+    role: "본인 포함 공동창업 3인 / 프론트엔드 전담",
     name: "헬로보드",
     description: "온보딩 프로세스를 자동화하는 B2B SaaS 플랫폼",
     image: "/images/helloboard.png",
@@ -48,7 +48,7 @@ export const projects: Project[] = [
       "react-hook-form",
       "next-intl",
     ],
-    keyRole: "제품 기획부터 프론트엔드 설계/구현, 세일즈까지 전 단계 직접 주도",
+    keyRole: "제품 기획·프론트엔드 설계 및 구현",
     architecture: {
       description:
         "feature 단위 자체 완결 구조. 각 feature는 api/components/hooks/store/types를 독립적으로 소유하며 cross-feature 의존성을 구조적으로 차단합니다. eslint-plugin-boundaries로 레이어 간 잘못된 참조를 빌드 타임에 자동 감지해 컨벤션이 아닌 규칙으로 강제합니다. App Router + [locale] 동적 라우팅으로 다국어(next-intl)를 지원하고, Zustand store를 feature 스코프로 격리해 전역 상태 오염을 방지합니다.",
@@ -134,11 +134,11 @@ export const projects: Project[] = [
           "stable key(항목 고유 id) 기반 재정렬 알고리즘으로 전환하고, React.memo + selector 기반 상태 구독 최소화를 적용해 drag & drop 중에도 변경된 항목만 리렌더링되도록 최적화했습니다.",
       },
       {
-        issue: "AI 동적 태스크 생성 시 LLM 응답 비결정성으로 인한 런타임 에러",
+        issue: "AI 동적 태스크 생성 시 LLM 응답 포맷 비일관성으로 인한 런타임 에러",
         cause:
           "동일한 프롬프트에도 LLM 응답 구조가 매번 다르게 반환될 수 있어, 검증 없이 폼에 주입하면 필드 누락·타입 불일치로 런타임 에러가 발생합니다.",
         solution:
-          "Few-shot 프롬프팅으로 응답 패턴을 고정해 일관성을 확보하고, Zod 스키마를 single source of truth로 두어 런타임에 응답을 검증. 검증 실패 시 fallback UI로 우회하고 Sentry로 비결정적 응답 패턴을 추적해 프롬프트를 점진적으로 개선했습니다.",
+          "Few-shot 프롬프팅으로 응답 패턴을 고정해 일관성을 확보하고, Zod 스키마를 single source of truth로 두어 런타임에 응답을 검증. 검증 실패 시 자동 재요청, 재시도 후에도 실패하면 사용자에게 에러 안내. AI 빌더 구간 Sentry 모니터링 기준 미처리 런타임 에러 0건 달성.",
       },
       {
         issue: "SSR 환경에서 고객사 테마 색상 적용 시 FOUC 발생",
@@ -150,7 +150,9 @@ export const projects: Project[] = [
     ],
     results: [
       "고객사별 브랜드 컬러 커스터마이징 지원, FOUC 없는 SSR 환경 동적 테마 적용 달성",
-      "고객사 온보딩 반복 프로세스 자동화, 고객사 인사담당자 직접 피드백 기준 신규 입사자 조기 퇴사율 15% 감소",
+      "drag & drop 리렌더 범위 폼 트리 전체 → 변경 항목 단위 축소",
+      "AI 빌더 Sentry 모니터링 기준, LLM 응답 비정형으로 인한 미처리 런타임 에러 0건",
+      "고객사 인사담당자 자체 보고 기준, 신규 입사자 조기 퇴사율 도입 전 대비 약 15% 감소",
     ],
     tags: ["창업", "B2B SaaS", "성능 최적화", "AI"],
   },
@@ -158,7 +160,7 @@ export const projects: Project[] = [
     slug: "stead",
     company: "풀랩",
     period: "2023.04 ~ 2024.12 (1년 9개월)",
-    role: "프론트엔드 챕터 리드 (4명)",
+    role: "프론트엔드 챕터 리드 (본인 포함 4명)",
     name: "스테드",
     description:
       "채용 공고 생성부터 이력서 필터링, 면접 일정 조율, 합격 통보까지 전 단계를 자동화하는 B2B SaaS ATS(채용 관리 시스템)",
@@ -172,7 +174,7 @@ export const projects: Project[] = [
       "Storybook",
       "Cypress",
     ],
-    keyRole: "프론트엔드 챕터 리드 (4명), 아키텍처 개선 및 기술 의사결정",
+    keyRole: "프론트엔드 챕터 리드 (본인 포함 4명), 아키텍처 개선 및 기술 의사결정",
     architecture: {
       description:
         "Turborepo 기반 모노레포로 채용팀(apps/web)과 지원자(apps/recruit), 공통 UI(packages/ui) 세 개의 패키지를 하나의 레포에서 관리. apps/web은 FSD(Feature-Sliced Design) 레이어 구조를 적용해 shared → entities → features → widgets → pages 단방향 참조를 강제합니다. eslint-plugin-boundaries로 레이어 간 잘못된 참조를 빌드 타임에 자동 감지합니다.",
@@ -222,7 +224,7 @@ export const projects: Project[] = [
       {
         title: "PDF 이력서 마스킹 처리",
         description:
-          "기존 라이브러리의 동적 마스킹 제어 한계를 확인 후 Canvas API 직접 구현. PDF.js Worker를 별도 번들로 분리해 메인 스레드 블로킹을 방지하고, Canvas 레이어로 민감정보 마스킹 처리.",
+          "타사 솔루션이 비용·기능 모두 오버스펙이라 직접 구현 결정. PDF.js를 dynamic import로 코드 스플리팅해 큰 번들을 초기 로드에서 격리하고, Worker를 별도 번들로 분리해 메인 스레드 블로킹 방지. Canvas 레이어로 마스킹 영역을 그리고 좌표 데이터로 동적 추가·삭제·이동 지원. 다운로드 시에는 Canvas 합성본을 이미지화한 PDF로 재조립해 원본 텍스트 레이어를 제거함으로써, 다운로드 후 텍스트 추출을 통한 마스킹 우회까지 차단.",
       },
     ],
     decisions: [
@@ -254,6 +256,13 @@ export const projects: Project[] = [
         choice:
           "PR → GitHub Actions CI(타입 체크·린트) → main 병합 시 개발 서버 자동 배포 → release 태그 업데이트로 프로덕션 배포를 트리거하는 단계별 파이프라인을 구성. 개발 서버에서 QA를 거친 후 릴리즈를 결정할 수 있어 의도치 않은 프로덕션 배포를 방지하고 롤백도 태그 단위로 명확하게 관리했습니다.",
       },
+      {
+        title: "PDF 마스킹 직접 구현",
+        problem:
+          "이력서·평가 PDF의 민감정보 마스킹 기능이 필요했으나, 검토한 타사 PDF 솔루션은 필요한 마스킹 외에도 다양한 기능이 묶여 있는 오버스펙이었고 라이선스 비용도 부담이었습니다. PDF 자체가 무거운 리소스라 렌더링 시 메인 스레드 블로킹 우려도 있었습니다.",
+        choice:
+          "필요 기능 대비 타사 솔루션이 비용·기능 모두 과하다고 판단해 직접 구현 결정. PDF.js + Canvas 조합으로 동적 마스킹 제어를 확보하되, 큰 번들 사이즈는 dynamic import로 격리하고 메인 스레드 블로킹은 Worker 분리로 방지. 추가로 Canvas 가림만으로는 원본 텍스트 레이어가 남아 다운로드 후 텍스트 추출로 마스킹이 우회될 수 있다는 보안 허점을 인지, 다운로드 시점에는 Canvas 합성본을 이미지화한 PDF로 재조립해 텍스트 레이어 자체를 제거하는 방식으로 설계했습니다.",
+      },
     ],
     troubleshooting: [
       {
@@ -273,14 +282,21 @@ export const projects: Project[] = [
       {
         issue: "SPA 구조로 SEO 불가 + CSS-in-JS 런타임 비용으로 성능 저하",
         cause:
-          "SPA 구조에서 검색 엔진이 JS를 실행하지 않아 채용 공고가 인덱싱되지 않았고, styled-components 런타임 스타일 생성이 TTI를 늦추고 있었습니다.",
+          "ATS의 외부 공개 채널(채용 공고·고객사 채용 페이지)이 핵심 비즈니스 유입 경로인데, SPA 구조에서 검색 엔진이 JS를 실행하지 않아 채용 공고가 안정적으로 인덱싱되지 않았고 OG 미리보기도 한계가 있었습니다. 여기에 styled-components 런타임 스타일 생성이 TTI를 늦추고 있었습니다.",
         solution:
-          "페이지 성격별 SSR/SSG/ISR 전략 매트릭스를 정의하고 App Router로 마이그레이션. vanilla-extract 도입으로 빌드 타임 CSS 생성, dynamic import + route level code splitting 적용해 LCP 30% 개선.",
+          "SPA prerender(react-snap 등)는 동적 콘텐츠 한계로 제외, Next.js App Router 마이그레이션 결정. 페이지 성격별 SSR/SSG/ISR 전략 매트릭스를 정의하고, vanilla-extract 도입으로 빌드 타임 CSS 생성, dynamic import + route level code splitting 적용해 LCP 30% 개선.",
+      },
+      {
+        issue: "PDF 마스킹 다운로드 시 원본 텍스트 추출로 마스킹 우회 가능",
+        cause:
+          "Canvas 레이어로 마스킹 영역을 시각적으로 가리는 방식은 화면상으로는 마스킹되어 보이지만, 원본 PDF의 텍스트 레이어가 그대로 남아있어 다운로드 후 PDF 뷰어에서 텍스트 복사·추출 시 민감정보가 노출되는 보안 허점이 있었습니다.",
+        solution:
+          "다운로드 시점에 Canvas 합성본을 이미지화한 PDF로 재조립해 원본 텍스트 레이어 자체를 제거. 화면 미리보기 단계에서는 인터랙티브한 Canvas 마스킹을 유지하되, 다운로드 결과물에서는 텍스트 추출 자체가 불가능하도록 두 단계로 분리해 시각적 마스킹과 데이터 마스킹을 모두 확보했습니다.",
       },
     ],
     results: [
       "순환 참조 131건 중 60건 제거(46%↓), eslint-plugin-boundaries로 신규 순환 참조 발생 원천 차단",
-      "LCP 약 30% 개선 (Lighthouse 기준), Core Web Vitals 전반 개선",
+      "LCP 약 30% 개선 (Lighthouse 기준), FCP·TTI 등 Web Vitals 보조 지표 전반 개선",
       "디자인 시스템 구축으로 컴포넌트 재사용성 향상, 반복 구현 감소",
     ],
     tags: ["챕터 리드", "모노레포", "FSD", "아키텍처"],
@@ -292,7 +308,7 @@ export const projects: Project[] = [
     role: "커머스팀 / 팀원",
     name: "하비풀 커머스",
     description:
-      "아티스트의 온라인 클래스 영상과 DIY 키트를 결합해 판매하는 취미 특화 이커머스",
+      "아티스트의 노하우가 담긴 온라인 클래스 영상과 필요한 재료를 담은 DIY 키트를 결합해 판매하는 취미 특화 이커머스",
     image: "/images/hobbyful.png",
     techStack: [
       "Next.js",
@@ -393,7 +409,7 @@ export const projects: Project[] = [
       {
         title: "단위 테스트 + E2E 테스트 조합",
         problem:
-          "테스트 코드 부족으로 장바구니/결제 엣지 케이스에서 운영 장애가 반복 발생했습니다.",
+          "테스트 코드 부족으로 장바구니/결제 edge case에서 운영 장애가 반복 발생했습니다.",
         choice:
           "비즈니스 로직은 Jest 단위 테스트로 빠르게 검증하고, 사용자 플로우 전체는 Cypress E2E 테스트로 커버하는 두 레이어 전략을 선택했습니다.",
       },
@@ -409,15 +425,15 @@ export const projects: Project[] = [
       {
         issue: "핵심 비즈니스 로직 런타임 버그 반복 발생",
         cause:
-          "쿠폰 적용, 가격 합산 등 복잡한 계산 로직에 테스트가 없어 엣지 케이스를 배포 후 운영 중에 발견했습니다.",
+          "쿠폰 적용, 가격 합산 등 복잡한 계산 로직에 테스트가 없어 edge case를 배포 후 운영 중에 발견했습니다.",
         solution:
           "Jest로 핵심 비즈니스 로직 단위 테스트를 작성하고 Cypress로 구매 플로우 전체를 E2E 커버. 핵심 비즈니스 로직 관련 운영 버그 20% 감소.",
       },
     ],
     results: [
       "TTFB 약 30% 개선 (Lighthouse 기준)",
-      "모바일 구매 전환율 약 25% 증가",
-      "핵심 비즈니스 로직 관련 운영 버그 20% 감소",
+      "모바일 구매 전환율 약 25% 증가 (GA 기준)",
+      "핵심 비즈니스 로직 관련 운영 버그 20% 감소 (Sentry 에러 발생 건수 기준)",
     ],
     tags: ["이커머스", "성능 최적화", "테스트"],
   },
@@ -491,20 +507,19 @@ export const projects: Project[] = [
         cause:
           "전체 온실 데이터를 한 번에 DOM에 렌더링하는 구조로, 데이터가 많을수록 DOM 노드 수가 선형 증가해 저사양 기기에서 렌더링 지연이 심각했습니다.",
         solution:
-          "Virtual Scroll 적용으로 뷰포트 기준 렌더링 범위를 고정. Lighthouse 성능 점수 70→90 개선, 렌더링 지연 시간 30% 감소.",
+          "Virtual Scroll 적용으로 뷰포트 기준 렌더링 범위를 고정. Lighthouse Performance Score 70 → 90 개선.",
       },
       {
         issue: "런타임 타입 오류로 운영 중 버그 반복",
         cause:
           "JS 동적 타입 특성상 API 응답 구조 변경이나 잘못된 프로퍼티 접근이 컴파일 시점에 잡히지 않아 배포 후에야 발견됐습니다.",
         solution:
-          "TypeScript 마이그레이션으로 컴파일 타임 타입 검증 체계 구축. any 타입 최소화로 타입 안전성을 확보해 런타임 타입 관련 버그 30% 감소.",
+          "TypeScript 마이그레이션으로 컴파일 타임 타입 검증 체계 구축. any 타입 최소화로 타입 안전성을 확보해 런타임 타입 관련 버그 30% 감소(GitHub Issues · Monday 이슈 트래킹 기준).",
       },
     ],
     results: [
-      "Lighthouse 성능 점수 70 → 90 개선",
-      "저사양 기기에서 온실맵 렌더링 지연 시간 30% 감소",
-      "런타임 타입 관련 버그 30% 감소",
+      "Lighthouse Performance Score 70 → 90 개선",
+      "런타임 타입 관련 버그 30% 감소 (GitHub Issues · Monday 이슈 트래킹 기준)",
     ],
     tags: ["IoT", "데이터 시각화", "성능 최적화", "TypeScript 마이그레이션"],
   },
