@@ -27,3 +27,58 @@ body {
 * {
   box-sizing: border-box;
 }
+
+@media print {
+  @page {
+    size: A4;
+    margin: 16mm 14mm;
+  }
+
+  html,
+  body {
+    background: #ffffff !important;
+    color: #111111 !important;
+  }
+
+  /* 인쇄 시에는 화면용 좌우 패딩과 폭 제한 해제 */
+  body main {
+    max-width: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* 네비게이션, 화면 전용 요소 숨김 */
+  nav,
+  .no-print {
+    display: none !important;
+  }
+
+  /* 링크 밑줄·색상 제거 */
+  a {
+    color: inherit !important;
+    text-decoration: none !important;
+  }
+
+  /* 페이지 break 유틸 */
+  .break-before-page {
+    break-before: page;
+    page-break-before: always;
+  }
+  .break-after-page {
+    break-after: page;
+    page-break-after: always;
+  }
+  .break-inside-avoid {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* 다크 모드 색상을 인쇄에서 강제로 라이트 톤으로 */
+  .print-root,
+  .print-root * {
+    color: #111111 !important;
+    background: transparent !important;
+    border-color: #d4d4d4 !important;
+  }
+}
+

@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export const metadata = {
   title: "소개 | 김승훈",
 };
@@ -34,9 +36,32 @@ export default function AboutPage() {
     <div className="space-y-16">
       {/* Hero */}
       <div className="space-y-2">
-        <p className="text-sm text-neutral-500 dark:text-neutral-400">
-          Frontend Developer
-        </p>
+        <div className="flex items-start justify-between gap-4">
+          <p className="text-sm text-neutral-500 dark:text-neutral-400">
+            Frontend Developer
+          </p>
+          <Link
+            href="/print"
+            className="inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-md border border-neutral-200 dark:border-neutral-700 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors"
+          >
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden
+            >
+              <polyline points="6 9 6 2 18 2 18 9" />
+              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+              <rect x="6" y="14" width="12" height="8" />
+            </svg>
+            포트폴리오 PDF
+          </Link>
+        </div>
         <h1 className="text-3xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">
           김승훈
         </h1>
