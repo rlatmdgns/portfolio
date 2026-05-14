@@ -51,7 +51,7 @@ export const projects: Project[] = [
     keyRole: "제품 기획·프론트엔드 설계 및 구현",
     architecture: {
       description:
-        "feature 단위 자체 완결 구조. 각 feature는 api/components/hooks/store/types를 독립적으로 소유하며 cross-feature 의존성을 구조적으로 차단합니다. eslint-plugin-boundaries로 레이어 간 잘못된 참조를 빌드 타임에 자동 감지해 컨벤션이 아닌 규칙으로 강제합니다. App Router + [locale] 동적 라우팅으로 다국어(next-intl)를 지원하고, Zustand store를 feature 스코프로 격리해 전역 상태 오염을 방지합니다.",
+        "App Router / features / Shared 3개 영역으로 분리한 Feature-driven 구조. 각 feature는 api/components/hooks/store/types를 독립적으로 소유하고, 참조 방향은 App Router → features → Shared 단방향만 허용 + features 간 직접 import 금지(eslint-plugin-boundaries로 빌드 타임 강제). App Router + [locale] 동적 라우팅으로 다국어(next-intl)를 지원하고, Zustand store는 feature 스코프로 격리해 전역 상태 오염을 방지합니다.",
       diagram: `graph TD
   subgraph "App Router"
     A["[locale] layout"] --> B[workspaces]
@@ -59,18 +59,14 @@ export const projects: Project[] = [
     A --> D[participant / guest]
   end
 
-  subgraph "features"
-    E[build-processes] --> E1[api]
-    E --> E2[components]
-    E --> E3[hooks]
-    E --> E4[store]
-    E --> E5[types]
+  subgraph "features (각 feature: api/components/hooks/store/types 자체 소유)"
+    E[build-processes]
     F[processes]
     G[members]
     H[templates]
   end
 
-  subgraph "공통 레이어"
+  subgraph "Shared"
     I[components/ui]
     J[lib / utils]
   end
@@ -78,28 +74,36 @@ export const projects: Project[] = [
   B --> E
   B --> F
   C --> G
-  C --> H`,
+  C --> H
+  E --> I
+  F --> I
+  G --> I
+  H --> I
+  E --> J
+  F --> J
+  G --> J
+  H --> J`,
     },
     keyFeatures: [
       {
         title: "3단계 계층(섹션 → 시퀀스 → 태스크) 온보딩 빌더",
         description:
-          "섹션-시퀀스-태스크의 3단계 계층 구조를 가진 다단계 폼 빌더. react-hook-form의 uncontrolled 구조를 기반으로 useFieldArray를 커스터마이징해 flatten + key 기반 diff 전략으로 계층형 데이터를 관리. Zustand로 폼 상태와 UI 상태(선택/포커스/drag)를 도메인 분리.",
+          "섹션-시퀀스-태스크의 3단계 계층 구조를 가진 다단계 폼 빌더. react-hook-form 비제어 폼 구조(ref 기반 register) + 중첩 useFieldArray로 3단계 계층 데이터를 관리하고, useWatch가 필요한 부분만 최소 필드 단위로 구독 격리. UI 상태(선택·포커스·drag)는 Zustand로 분리해 selector 구독을 최소화하고, stable key 재정렬 + React.memo로 리렌더를 차단.",
       },
       {
         title: "AI 온보딩 태스크 자동 생성",
         description:
-          "AI 기반 온보딩 태스크 동적 빌더. Few-shot 프롬프팅으로 응답 일관성을 확보하고, Zod 스키마로 런타임 타입 검증을 수행해 비결정적 AI 응답으로 인한 에러를 사전 차단.",
+          "인사담당자의 '온보딩 설계 진입장벽' 완화를 위해 AI 태스크 콘텐츠 초안 자동 생성 도입. LLM 응답 비일관성 리스크는 Few-shot 프롬프팅으로 응답 패턴을 안정화하고, Zod 런타임 스키마 검증으로 UI 도달 전에 비정형 응답을 차단.",
       },
       {
         title: "멀티테넌트 동적 테마 시스템",
         description:
-          "고객사별 브랜드 컬러를 SSR 환경에서 FOUC 없이 적용. CSS Custom Properties + color-mix() 함수로 50~950 10단계 컬러 팔레트를 자동 생성하고, YIQ 공식으로 텍스트 대비 색상을 자동 계산해 접근성을 보장. ThemeProvider를 server component로 구성해 `<style>` 태그에 CSS 변수를 SSR 렌더링하고, 테마 변경 시 router.refresh()로 페이지 새로고침 없이 즉시 반영.",
+          "고객사별 브랜드 컬러를 SSR 환경에서 FOUC 없이 적용. CSS Custom Properties + color-mix() 함수로 50~950 팔레트를 자동 생성해 디자이너의 팔레트 수동 관리 부담을 제거. ThemeProvider를 server component로 구성해 `<style>` 태그에 CSS 변수를 SSR 인라인 주입하고, 테마 변경 시 router.refresh()로 페이지 새로고침 없이 즉시 반영.",
       },
       {
         title: "12종 질문 입력 타입",
         description:
-          "단답형·장문형·단일선택·다중선택·날짜·숫자·점수·슬라이더·NPS·별점·True/False·등급 등 12가지 입력 타입을 플러그인 방식으로 설계. 각 타입을 독립 컴포넌트로 관리해 신규 타입 추가 시 기존 코드 변경 없이 확장 가능.",
+          "단답형·장문형·단일선택·다중선택·날짜·숫자·점수·슬라이더·NPS·별점·True/False·등급 등 12가지 입력 타입을 지원. 각 타입을 독립 컴포넌트로 분리하고 '타입 키 → 컴포넌트' 매핑 테이블로 관리해, 새 입력 타입을 추가할 때 기존 코드 변경 없이 컴포넌트 등록만으로 확장 가능.",
       },
     ],
     decisions: [
@@ -108,37 +112,30 @@ export const projects: Project[] = [
         problem:
           "고객사별로 브랜드 컬러를 다르게 적용해야 하는 멀티테넌트 환경에서, 고객사 수만큼 빌드를 분리하면 운영 부담이 커지고, 클라이언트 런타임에 색상을 주입하면 서버 렌더링 결과와 충돌해 FOUC가 발생합니다.",
         choice:
-          "단일 빌드로 N개 고객사 테마를 지원하면서 FOUC까지 차단하기 위해, ThemeProvider를 server component로 구성해 CSS Custom Properties를 `<style>` 태그에 SSR 인라인 주입하는 방식을 채택. hydration 이전 시점에 변수가 적용되어 FOUC를 원천 차단했고, 테마 변경 시에는 router.refresh()로 server component만 재렌더해 페이지 새로고침 없이 즉시 반영되도록 했습니다.",
+          "단일 빌드로 다수 고객사 테마를 지원하면서 FOUC까지 차단하기 위해, ThemeProvider를 server component로 구성해 CSS Custom Properties를 `<style>` 태그에 SSR 인라인 주입하는 방식을 채택. hydration 이전 시점에 변수가 적용되어 FOUC를 원천 차단했고, 테마 변경 시에는 router.refresh()로 server component만 재렌더해 페이지 새로고침 없이 즉시 반영되도록 했습니다.",
       },
       {
-        title: "Feature 단위 아키텍처",
+        title: "FSD 핵심만 취한 3단계 Feature-driven 구조",
         problem:
-          "기능이 늘면서 어떤 컴포넌트가 어디에 쓰이는지 추적이 어려워지고, 변경 시 사이드 이펙트 범위를 예측하기 힘들어졌습니다.",
+          "스테드에서 순환 참조 문제를 해결할 도구를 찾다 FSD를 알게 되어 도입했고, 단방향 참조·cross-import 금지의 효과는 분명했습니다. 다만 운영하면서 다층 슬라이스 구조 특성상 작은 기능 하나 추가에도 entities/features/widgets 여러 레이어를 거쳐야 하는 보일러플레이트가 불편하다고 느꼈습니다. 헬로보드는 공동창업 3인·초기 단계 제품이라 그 불편함을 그대로 들고 갈 이유가 없었습니다.",
         choice:
-          "각 feature가 api/components/hooks/store/types를 독립적으로 소유하는 자체 완결 구조를 설계. cross-feature 의존성을 구조적으로 차단해 변경 범위를 feature 단위로 명확히 격리했고, eslint-plugin-boundaries로 잘못된 참조를 빌드 타임에 자동 감지해 컨벤션이 아닌 규칙으로 강제했습니다.",
-      },
-      {
-        title: "Zustand store feature 스코프 격리",
-        problem:
-          "전역 Zustand store에 편집기 UI 상태(선택, 포커스, drag)와 폼 상태가 섞이면서 무관한 컴포넌트까지 리렌더링되는 문제가 발생했습니다.",
-        choice:
-          "각 feature의 store/ 폴더에 Zustand store를 격리. 폼 상태는 react-hook-form의 uncontrolled 구조에 위임하고, UI 상태만 Zustand로 관리해 도메인을 명확히 분리했습니다.",
+          "FSD의 본질(단방향 참조 + 도메인 간 cross-import 금지)과 형식(다층 슬라이스)을 분리해서 보고, 본질만 취해 App Router / features / Shared 3개 영역으로 단순화. 각 feature가 자체 완결 구조로 변경 범위를 격리하고, eslint-plugin-boundaries로 규칙을 빌드 타임에 강제했습니다.",
       },
     ],
     troubleshooting: [
       {
         issue: "3단계 계층 폼에서 drag & drop 시 전체 리렌더링",
         cause:
-          "index 기반 key를 사용하면 항목을 재정렬할 때 모든 컴포넌트의 key가 바뀌어 React가 기존 DOM을 버리고 전체를 재생성했습니다.",
+          "두 가지 차원의 원인이 결합되어 있었습니다. (1) 폼 상태와 UI 상태(선택·포커스·drag)가 같은 컴포넌트 트리에서 관리되어 UI 상태 변경마다 form 구독 트리 전체가 리렌더되는 '도메인 결합' 문제. (2) drag로 항목 순서가 바뀔 때 index 기반 key 때문에 모든 컴포넌트의 key가 흔들려 unmount/mount가 발생하는 'reconciliation' 문제. React DevTools Profiler로 두 원인을 분리해 측정했습니다.",
         solution:
-          "stable key(항목 고유 id) 기반 재정렬 알고리즘으로 전환하고, React.memo + selector 기반 상태 구독 최소화를 적용해 drag & drop 중에도 변경된 항목만 리렌더링되도록 최적화했습니다.",
+          "(1)에는 폼 상태와 UI 상태를 분리 — react-hook-form의 비제어 폼 구조(ref 기반 register) + 중첩 useFieldArray로 3단계 계층 데이터를 관리하고, useWatch가 필요한 부분만 최소 필드 단위로 구독을 격리. UI 상태는 Zustand로 분리해 selector 구독을 최소화. (2)에는 stable key(항목 고유 id) 기반 재정렬 + React.memo로 변경된 항목만 리렌더되도록 차단.",
       },
       {
         issue: "AI 동적 태스크 생성 시 LLM 응답 포맷 비일관성으로 인한 런타임 에러",
         cause:
-          "동일한 프롬프트에도 LLM 응답 구조가 매번 다르게 반환될 수 있어, 검증 없이 폼에 주입하면 필드 누락·타입 불일치로 런타임 에러가 발생합니다.",
+          "인사담당자의 '온보딩 설계 진입장벽'을 완화하기 위해 AI 태스크 콘텐츠 초안 자동 생성을 도입했으나, 동일한 프롬프트에도 LLM 응답 구조가 매번 다르게 반환되어 검증 없이 폼에 주입하면 필드 누락·타입 불일치로 런타임 에러가 발생할 수 있었습니다.",
         solution:
-          "Few-shot 프롬프팅으로 응답 패턴을 고정해 일관성을 확보하고, Zod 스키마를 single source of truth로 두어 런타임에 응답을 검증. 검증 실패 시 자동 재요청, 재시도 후에도 실패하면 사용자에게 에러 안내. AI 빌더 구간 Sentry 모니터링 기준 미처리 런타임 에러 0건 달성.",
+          "Few-shot 프롬프팅으로 응답 패턴을 안정화하고, Zod 런타임 스키마 검증을 single source of truth로 두어 UI 도달 전에 비정형 응답을 차단. 검증 실패 시 자동 재요청, 재시도 후에도 실패하면 사용자에게 에러를 안내. AI 빌더 구간 Sentry 모니터링 기준 미처리 런타임 에러 0건 달성.",
       },
       {
         issue: "SSR 환경에서 고객사 테마 색상 적용 시 FOUC 발생",
@@ -149,12 +146,13 @@ export const projects: Project[] = [
       },
     ],
     results: [
-      "고객사별 브랜드 컬러 커스터마이징 지원, FOUC 없는 SSR 환경 동적 테마 적용 달성",
-      "drag & drop 리렌더 범위 폼 트리 전체 → 변경 항목 단위 축소",
-      "AI 빌더 Sentry 모니터링 기준, LLM 응답 비정형으로 인한 미처리 런타임 에러 0건",
-      "고객사 인사담당자 자체 보고 기준, 신규 입사자 조기 퇴사율 도입 전 대비 약 15% 감소",
+      "상태 변경 영향 범위: 폼 트리 전체 → 변경 필드 단위로 축소",
+      "drag & drop 리렌더: 전체 트리 → 재정렬 항목 단위로 축소",
+      "FOUC 해소, 고객사별 브랜드 컬러 커스터마이징 안정화",
+      "AI 초안 기반 빠른 구성으로 진입장벽 완화, AI 빌더 Sentry 모니터링 기준 미처리 런타임 에러 0건",
+      "도입 고객사 인사담당자 자체 보고 기준, 신규 입사자 조기 퇴사율 도입 전 대비 약 15% 감소",
     ],
-    tags: ["창업", "SaaS", "성능 최적화", "AI"],
+    tags: ["창업", "SaaS", "성능 최적화", "LLM 통합"],
   },
   {
     slug: "stead",
@@ -177,7 +175,7 @@ export const projects: Project[] = [
     keyRole: "프론트엔드 챕터 리드 (본인 포함 4명), 아키텍처 개선 및 기술 의사결정",
     architecture: {
       description:
-        "Turborepo 기반 모노레포로 채용팀(apps/web)과 지원자(apps/recruit), 공통 UI(packages/ui) 세 개의 패키지를 하나의 레포에서 관리. apps/web은 FSD(Feature-Sliced Design) 레이어 구조를 적용해 shared → entities → features → widgets → pages 단방향 참조를 강제합니다. eslint-plugin-boundaries로 레이어 간 잘못된 참조를 빌드 타임에 자동 감지합니다.",
+        "Turborepo 기반 모노레포로 채용팀(apps/web)과 지원자(apps/recruit), 공통 UI(packages/ui) 세 개의 패키지를 하나의 레포에서 관리. apps/web은 화면 수가 많고 도메인이 복잡해 FSD(Feature-Sliced Design) 레이어 구조(pages → widgets → features → entities → shared 단방향 참조 — 상위 레이어가 하위 레이어를 참조)를 적용했고, apps/recruit는 화면 수가 적어 FSD 풀버전 대신 modules 단일 레이어로 가볍게 유지했습니다. eslint-plugin-boundaries로 레이어 간 잘못된 참조를 빌드 타임에 자동 감지합니다.",
       diagram: `graph TD
   subgraph "Turborepo"
     subgraph "apps/web 채용팀"
@@ -191,9 +189,7 @@ export const projects: Project[] = [
       R2 --> R3[shared]
     end
     subgraph "packages/ui"
-      U1[컴포넌트]
-      U2[Storybook]
-      U3[vanilla-extract 테마]
+      U1["컴포넌트 + Storybook 문서 + vanilla-extract 테마"]
     end
   end
 
@@ -202,29 +198,29 @@ export const projects: Project[] = [
     },
     keyFeatures: [
       {
-        title: "FSD 아키텍처 + 자동 순환 참조 감지",
+        title: "FSD 단방향 레이어 + 빌드 타임 경계 강제",
         description:
-          "dependency-cruiser로 순환 참조 131건을 시각화 후 FSD 단방향 레이어 구조 도입. eslint-plugin-boundaries로 레이어 간 참조 위반을 빌드 타임에 자동 감지해 신규 순환 참조 발생을 원천 차단.",
+          "dependency-cruiser로 누적된 순환 참조 131건을 시각화한 뒤 FSD 단방향 레이어 구조를 도입. eslint-plugin-boundaries로 레이어 경계 위반을 빌드 타임에 차단해 단방향 규칙을 강제했고, 그 결과 신규 순환 참조 발생을 구조적으로 막았습니다.",
       },
       {
-        title: "design token 기반 스타일 시스템",
+        title: "시맨틱 네이밍 기반 design token 공동 설계",
         description:
-          "컴포넌트 파편화와 디자인-개발 간 언어 불일치 문제를 해결하기 위해 디자이너와 함께 design token 체계를 공동 설계. primary-400 같은 스케일 기반 대신 size-xs 같은 시맨틱 네이밍으로 학습 곡선을 낮춰 디자이너·기획자도 바로 이해할 수 있는 공통 언어를 만들었고, vanilla-extract recipe API로 variant 기반 컴포넌트 스타일 시스템을 구성. Storybook으로 컴포넌트 카탈로그와 동작 흐름을 문서화해 개발자·디자이너·기획자가 배포 전 동일한 기준으로 컴포넌트를 조합하고 소통하는 환경을 구축.",
+          "컴포넌트 파편화와 디자인-개발 간 언어 불일치 문제를 해결하기 위해 디자이너와 함께 design token 체계를 공동 설계. font-16/color-gray-700 같은 스케일/값 기반 네이밍 대신 text-md/text-default 같은 시맨틱 네이밍을 채택해 디자이너·기획자도 바로 이해할 수 있는 공통 언어를 만들었습니다.",
+      },
+      {
+        title: "vanilla-extract variant 시스템 + Storybook 카탈로그",
+        description:
+          "vanilla-extract recipe API로 variant 기반 컴포넌트 스타일 시스템을 구성하고, Storybook으로 컴포넌트 카탈로그와 동작 흐름을 문서화. 개발자·디자이너·기획자가 배포 전 동일한 기준으로 컴포넌트를 조합·검증할 수 있는 환경을 구축했습니다.",
       },
       {
         title: "페이지 성격별 렌더링 전략 매트릭스",
         description:
-          "채용 공고(SSG/ISR), 지원자 현황(SSR), 대시보드(CSR) 등 페이지 성격에 따라 렌더링 전략을 분리 적용. App Router 기반 서버/클라이언트 컴포넌트 분리 및 data fetching 서버 이동으로 hydration 비용 감소.",
-      },
-      {
-        title: "PoC 기반 기술 도입 및 개발 문화 구축",
-        description:
-          "FSD·vanilla-extract 등 굵직한 기술 전환을 모두 PoC → 팀 공유 → 합의 순서로 진행. 독단적 결정 없이 팀 전체가 맥락을 이해한 상태에서 도입해 실제 적용 시 마찰을 최소화했습니다. 정기 스터디와 코드 리뷰 문화도 직접 만들어 팀 기술 수준과 코드 품질을 함께 끌어올렸습니다.",
+          "외부 공개 페이지(채용 공고·고객사 채용 페이지)는 SSR/ISR로 안정적 크롤링·빠른 TTFB를 확보하고, 지원자 현황·대시보드는 성격에 따라 SSR/CSR로 분리 적용. 서버/클라이언트 컴포넌트 분리 + data fetching 서버 이동으로 hydration 비용을 줄이고, dynamic import + route-level code splitting, next/image priority + font-display swap으로 LCP 자원 우선 로딩 구성.",
       },
       {
         title: "이력서 PDF 뷰어 + 민감정보 마스킹",
         description:
-          "타사 솔루션이 비용·기능 모두 오버스펙이라 직접 구현 결정. PDF.js를 dynamic import로 코드 스플리팅해 큰 번들을 초기 로드에서 격리하고, Worker를 별도 번들로 분리해 메인 스레드 블로킹 방지. Canvas 레이어로 마스킹 영역을 그리고 좌표 데이터로 동적 추가·삭제·이동 지원. 다운로드 시에는 Canvas 합성본을 이미지화한 PDF로 재조립해 원본 텍스트 레이어를 제거함으로써, 다운로드 후 텍스트 추출을 통한 마스킹 우회까지 차단.",
+          "타사 솔루션이 비용·기능 모두 오버스펙이라 직접 구현 결정. PDF.js + Canvas로 구현하되 dynamic import로 큰 번들을 격리하고 Worker 분리로 메인 스레드 블로킹을 방지. Canvas 레이어 위에 좌표 기반 마스킹 영역을 그리고 사용자가 직접 추가·삭제·이동할 수 있게 구성해, 고정 템플릿이 아닌 케이스별 마스킹을 지원. 다운로드 시에는 Canvas 합성본을 이미지화한 PDF로 재조립해 원본 텍스트 레이어를 제거함으로써, 다운로드 후 텍스트 추출을 통한 마스킹 우회까지 차단.",
       },
     ],
     decisions: [
@@ -250,13 +246,6 @@ export const projects: Project[] = [
           "참조 방향을 코드 레벨에서 강제하는 FSD + eslint-plugin-boundaries 조합 선택. 규칙 위반 시 빌드가 실패해 팀 합의 없이는 레이어 규칙을 어길 수 없는 구조를 만들었습니다.",
       },
       {
-        title: "release 태그 기반 프로덕션 배포",
-        problem:
-          "main 병합 즉시 프로덕션에 자동 배포되면 고객사 데이터를 다루는 채용 시스템 특성상 검증되지 않은 변경이 운영에 반영될 위험이 있었습니다.",
-        choice:
-          "PR → GitHub Actions CI(타입 체크·린트) → main 병합 시 개발 서버 자동 배포 → release 태그 업데이트로 프로덕션 배포를 트리거하는 단계별 파이프라인을 구성. 개발 서버에서 QA를 거친 후 릴리즈를 결정할 수 있어 의도치 않은 프로덕션 배포를 방지하고 롤백도 태그 단위로 명확하게 관리했습니다.",
-      },
-      {
         title: "PDF 마스킹 직접 구현",
         problem:
           "이력서 PDF의 민감정보 마스킹 기능이 필요했으나, 검토한 타사 PDF 솔루션은 필요한 마스킹 외에도 다양한 기능이 묶여 있는 오버스펙이었고 라이선스 비용도 부담이었습니다. PDF 자체가 무거운 리소스라 렌더링 시 메인 스레드 블로킹 우려도 있었습니다.",
@@ -268,9 +257,9 @@ export const projects: Project[] = [
       {
         issue: "3개 레포 간 순환 참조 131건으로 사이드 이펙트 예측 불가",
         cause:
-          "레포 간 공통 코드를 각자 복사해 사용하면서 변경 시 영향 범위 추적이 불가능해졌습니다.",
+          "3개 레포의 dependencies·컴포넌트 구조가 거의 동일한데도 분리 운영되어 코드 중복이 발생했고, 한 레포는 순환 참조 131건이 누적되어 사이드 이펙트 추적이 어려웠습니다.",
         solution:
-          "dependency-cruiser로 순환 참조 131건을 시각화하고, Turborepo 모노레포 + FSD 단방향 레이어 구조로 전환. eslint-plugin-boundaries로 순환 참조 46% 제거 후 신규 발생을 원천 차단했습니다.",
+          "공통 코드는 Turborepo apps/packages + turbo.json 빌드 캐시로 단일 패키지에 통합(npm 패키지 분리는 버전 동기화 오버헤드 부담). dependency-cruiser로 순환 참조를 시각화하고 FSD 단방향 레이어(shared → entities → features → widgets → pages)를 도입, eslint-plugin-boundaries로 빌드 타임 차단. 챕터 리드로서 검증 브랜치에 먼저 적용 → 팀 공유·논의 → 합의 기반 본격 도입. 131건 중 60건(46%) 제거, 잔여 71건은 점진적 마이그레이션 계획으로 관리.",
       },
       {
         issue: "컴포넌트 파편화로 배포 후 디자이너 의도와 다른 결과물 반복",
@@ -282,9 +271,9 @@ export const projects: Project[] = [
       {
         issue: "SPA 구조로 SEO 불가 + CSS-in-JS 런타임 비용으로 성능 저하",
         cause:
-          "ATS의 외부 공개 채널(채용 공고·고객사 채용 페이지)이 핵심 비즈니스 유입 경로인데, SPA 구조에서 검색 엔진이 JS를 실행하지 않아 채용 공고가 안정적으로 인덱싱되지 않았고 OG 미리보기도 한계가 있었습니다. 여기에 styled-components 런타임 스타일 생성이 TTI를 늦추고 있었습니다.",
+          "ATS의 외부 공개 채널(채용 공고·고객사 채용 페이지)이 핵심 비즈니스 유입 경로인데, 구직자가 검색·소셜 공유로 진입하므로 안정적 크롤링·OG 메타 태그 대응이 필수였습니다. 그러나 기존 SPA(React)는 JS 기반 크롤링 지연과 OG 미리보기 한계로 이를 지원하지 못했고, styled-components 런타임 비용까지 더해져 초기 렌더링 성능이 저하되고 있었습니다.",
         solution:
-          "SPA prerender(react-snap 등)는 동적 콘텐츠 한계로 제외, Next.js App Router 마이그레이션 결정. 페이지 성격별 SSR/SSG/ISR 전략 매트릭스를 정의하고, vanilla-extract 도입으로 빌드 타임 CSS 생성, dynamic import + route level code splitting 적용해 LCP 30% 개선.",
+          "SPA prerender(react-snap 등)는 동적 콘텐츠 한계로 제외하고, 서버 운영·전환 비용 트레이드오프는 있지만 SEO/OG 대응과 렌더링 성능 확보가 우세하다고 판단해 Next.js App Router 마이그레이션 결정. 외부 공개 페이지는 SSR/ISR로 안정적 크롤링·빠른 TTFB를 확보하고, 서버/클라이언트 컴포넌트 분리 + data fetching 서버 이동으로 hydration 비용 감소. 같은 시점에 styled-components 런타임 비용 정리를 위해 vanilla-extract + design token recipe API로 variant 스타일 시스템을 재설계하고, dynamic import + route-level code splitting, next/image priority + font-display swap으로 LCP 자원을 우선 로딩하도록 구성해 LCP 30% 개선.",
       },
       {
         issue: "PDF 마스킹 다운로드 시 원본 텍스트 추출로 마스킹 우회 가능",
@@ -295,9 +284,10 @@ export const projects: Project[] = [
       },
     ],
     results: [
-      "순환 참조 131건 중 60건 제거(46%↓), eslint-plugin-boundaries로 신규 순환 참조 발생 원천 차단",
-      "LCP 약 30% 개선 (Lighthouse 기준), FCP·TTI 등 Web Vitals 보조 지표 전반 개선",
-      "디자인 시스템 구축으로 컴포넌트 재사용성 향상, 반복 구현 감소",
+      "해당 레포 순환 참조 131건 중 60건(46%) 제거, 잔여 71건은 점진적 마이그레이션 계획. 신규 발생은 eslint-plugin-boundaries로 차단",
+      "LCP 30% 개선 (Lighthouse 기준), FCP 등 Lighthouse 보조 지표 전반 개선",
+      "디자인 시스템 구축으로 컴포넌트 재사용성 향상",
+      "PDF 마스킹 자체 구현으로 다운로드 후 텍스트 추출 우회까지 차단",
     ],
     tags: ["챕터 리드", "모노레포", "FSD", "아키텍처"],
   },
@@ -322,7 +312,7 @@ export const projects: Project[] = [
     keyRole: "커머스 서비스 고도화 및 신규 기능 개발, 어드민 개발",
     architecture: {
       description:
-        "Next.js Pages Router 기반의 Atomic Design 패턴 아키텍처. atoms → molecules → organisms → templates → pages 5계층 구조로 UI를 조합. pages는 라우팅만 담당하고, templates가 전체 레이아웃과 로직을 조율. organisms은 molecules와 atoms를 조합한 독립 UI 블록으로 구성. 서버 상태는 TanStack Query, API 통신은 커스텀 ApiService 레이어로 추상화.",
+        "Next.js Pages Router 기반의 Atomic Design 패턴 아키텍처. atoms → molecules → organisms → templates → pages 5계층 구조로 UI를 조합. pages는 라우팅과 데이터 페칭을 담당하고, templates는 전체 레이아웃을 조립해 데이터 흐름을 하위 컴포넌트로 연결. organisms은 molecules와 atoms를 조합한 독립 UI 블록으로 구성. 서버 상태는 TanStack Query, API 통신은 커스텀 ApiService 레이어로 추상화.",
       diagram: `graph TD
   subgraph "Pages Router"
     P1[pages/index]
@@ -358,7 +348,7 @@ export const projects: Project[] = [
     A4[Image]
   end
 
-  subgraph "공통 레이어"
+  subgraph "Shared"
     API[ApiService]
     QUERY[TanStack Query]
     AUTH[NextAuth]
@@ -431,7 +421,7 @@ export const projects: Project[] = [
       },
     ],
     results: [
-      "TTFB 약 30% 개선 (Lighthouse 기준)",
+      "TTFB 약 30% 개선 (Lighthouse Diagnostics 기준)",
       "모바일 구매 전환율 약 25% 증가 (GA 기준)",
       "핵심 비즈니스 로직 관련 운영 버그 20% 감소 (Sentry 에러 발생 건수 기준)",
     ],
@@ -472,17 +462,17 @@ export const projects: Project[] = [
       {
         title: "온실맵 Virtual Scroll",
         description:
-          "저사양 기기에서 수백 개의 온실 데이터를 전체 렌더링하면 병목이 발생. Virtual Scroll을 적용해 뷰포트에 보이는 항목만 렌더링하도록 최적화. 스크롤 시에도 렌더링 범위를 최소화해 메모리 사용량을 제어.",
+          "저사양 기기의 렌더링 병목 원인을 전체 데이터 일괄 렌더링 구조로 진단. PoC로 가상화 효과를 검증한 뒤 Virtual Scroll을 도입해 뷰포트에 보이는 항목만 DOM에 유지하도록 최적화하고, 스크롤 시에도 DOM 노드 수를 일정 범위 내로 제한해 렌더링 비용을 통제. → Lighthouse Performance Score 70 → 90 개선.",
       },
       {
-        title: "TypeScript 마이그레이션 주도",
+        title: "TypeScript 도입과 점진적 마이그레이션",
         description:
-          "런타임 타입 오류가 반복 발생하는 근본 원인이 JS의 동적 타입임을 파악. TypeScript 도입을 제안하고 마이그레이션을 주도. 기존 JS 파일을 점진적으로 TS로 전환하며 any 타입 최소화로 타입 안전성 확보.",
+          "런타임 타입 오류가 반복 발생하는 근본 원인이 JS의 동적 타입임을 파악, 컴파일 타임 검증으로 앞당기기 위해 TypeScript 도입을 팀에 제안. 기존 JS와 공존하는 점진적 마이그레이션을 주도해 신규 파일은 TS로, 기존 파일은 변경 시점에 순차 전환하며 any 타입을 최소화했습니다.",
       },
       {
         title: "IoT 센서 데이터 실시간 시각화",
         description:
-          "온도, 습도, CO2 등 다수 센서 데이터를 Highcharts로 실시간 차트 시각화. 대용량 시계열 데이터의 렌더링 성능을 유지하면서 사용자가 재배 전략을 직관적으로 판단할 수 있도록 구성.",
+          "온도·습도·CO2 등 다수 센서 데이터를 Highcharts로 실시간 차트 시각화. 사용자가 재배 전략을 직관적으로 판단할 수 있도록 차트 구성과 인터랙션을 설계.",
       },
     ],
     decisions: [
@@ -521,6 +511,6 @@ export const projects: Project[] = [
       "Lighthouse Performance Score 70 → 90 개선",
       "런타임 타입 관련 버그 30% 감소 (GitHub Issues · Monday 이슈 트래킹 기준)",
     ],
-    tags: ["IoT", "데이터 시각화", "성능 최적화", "TypeScript 마이그레이션"],
+    tags: ["IoT", "데이터 시각화", "성능 최적화", "TypeScript"],
   },
 ];
