@@ -234,7 +234,7 @@ export const projects: Project[] = [
       {
         title: "vanilla-extract",
         problem:
-          "CSS-in-JS(styled-components)의 런타임 스타일 생성 비용이 TTI와 초기 렌더링 성능에 영향을 주고 있었습니다.",
+          "CSS-in-JS(styled-components)의 런타임 스타일 생성 비용이 인터랙션 가능 시점과 초기 렌더링 성능에 영향을 주고 있었습니다.",
         choice:
           "단순 교체 대신 vanilla-extract 전환 시점을 design token 기반 스타일 시스템 전면 재설계 기회로 활용. 빌드 타임 CSS 생성으로 런타임 비용을 완전히 제거했습니다.",
       },
@@ -259,7 +259,7 @@ export const projects: Project[] = [
         cause:
           "3개 레포의 dependencies·컴포넌트 구조가 거의 동일한데도 분리 운영되어 코드 중복이 발생했고, 한 레포는 순환 참조 131건이 누적되어 사이드 이펙트 추적이 어려웠습니다.",
         solution:
-          "공통 코드는 Turborepo apps/packages + turbo.json 빌드 캐시로 단일 패키지에 통합(npm 패키지 분리는 버전 동기화 오버헤드 부담). dependency-cruiser로 순환 참조를 시각화하고 FSD 단방향 레이어(shared → entities → features → widgets → pages)를 도입, eslint-plugin-boundaries로 빌드 타임 차단. 챕터 리드로서 검증 브랜치에 먼저 적용 → 팀 공유·논의 → 합의 기반 본격 도입. 131건 중 60건(46%) 제거, 잔여 71건은 점진적 마이그레이션 계획으로 관리.",
+          "공통 코드는 Turborepo apps/packages + turbo.json 빌드 캐시로 단일 패키지에 통합(npm 패키지 분리는 버전 동기화 오버헤드 부담). dependency-cruiser로 순환 참조를 시각화하고 FSD 단방향 레이어(pages → widgets → features → entities → shared, 상위 레이어가 하위 레이어를 참조)를 도입, eslint-plugin-boundaries로 빌드 타임 차단. 챕터 리드로서 검증 브랜치에 먼저 적용 → 팀 공유·논의 → 합의 기반 본격 도입. 131건 중 60건(46%) 제거, 잔여 71건은 점진적으로 정리 중.",
       },
       {
         issue: "컴포넌트 파편화로 배포 후 디자이너 의도와 다른 결과물 반복",
@@ -284,7 +284,7 @@ export const projects: Project[] = [
       },
     ],
     results: [
-      "해당 레포 순환 참조 131건 중 60건(46%) 제거, 잔여 71건은 점진적 마이그레이션 계획. 신규 발생은 eslint-plugin-boundaries로 차단",
+      "해당 레포 순환 참조 131건 중 60건(46%) 제거, 잔여 71건은 점진적으로 정리 중. 신규 발생은 eslint-plugin-boundaries로 차단",
       "LCP 30% 개선 (Lighthouse 기준), FCP 등 Lighthouse 보조 지표 전반 개선",
       "디자인 시스템 구축으로 컴포넌트 재사용성 향상",
       "PDF 마스킹 자체 구현으로 다운로드 후 텍스트 추출 우회까지 차단",
@@ -410,7 +410,7 @@ export const projects: Project[] = [
         cause:
           "전체 유입의 상당 비율이 모바일임에도 UI가 데스크톱 기준으로 설계되어 터치 영역이 작고 스크롤 구조가 맞지 않았습니다.",
         solution:
-          "모바일 퍼스트 기준으로 반응형 레이아웃을 전면 재구성. 주요 CTA 버튼 영역 확대, 스크롤 구조 개선 후 모바일 구매 전환율 약 25% 증가.",
+          "모바일 퍼스트 기준으로 반응형 레이아웃을 전면 재구성. 주요 CTA 버튼 영역 확대, 스크롤 구조 개선 후 모바일 구매 전환율 25% 증가.",
       },
       {
         issue: "핵심 비즈니스 로직 런타임 버그 반복 발생",
@@ -421,8 +421,8 @@ export const projects: Project[] = [
       },
     ],
     results: [
-      "TTFB 약 30% 개선 (Lighthouse Diagnostics 기준)",
-      "모바일 구매 전환율 약 25% 증가 (GA 기준)",
+      "TTFB 30% 개선 (Lighthouse Diagnostics 기준)",
+      "모바일 구매 전환율 25% 증가 (GA 기준)",
       "핵심 비즈니스 로직 관련 운영 버그 20% 감소 (Sentry 에러 발생 건수 기준)",
     ],
     tags: ["이커머스", "성능 최적화", "테스트"],
