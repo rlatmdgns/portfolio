@@ -45,7 +45,7 @@ export default function PrintPage() {
       </div>
 
       {/* 표지 */}
-      <header className="space-y-3 break-after-page">
+      <header className="space-y-3">
         <p className="text-sm text-neutral-500">Frontend Developer · Portfolio</p>
         <h1 className="text-3xl font-bold tracking-tight">김승훈</h1>
         <p className="text-sm text-neutral-600">
@@ -67,9 +67,6 @@ export default function PrintPage() {
           About
         </h2>
         <div className="space-y-3 text-sm text-neutral-700 leading-relaxed">
-          <p className="font-semibold text-neutral-900">
-            5년차 프론트엔드 개발자. 공동창업 · 프론트엔드 챕터 리드 경험.
-          </p>
           <p>
             제품을 만들고 운영한 경험으로 기술 의사결정이 비즈니스 성과로
             이어지도록 합니다.
@@ -121,7 +118,7 @@ export default function PrintPage() {
       {projects.map((project) => (
         <article
           key={project.slug}
-          className="space-y-6 break-before-page"
+          className="space-y-6"
         >
           <header className="space-y-2">
             <div className="flex items-center gap-2 flex-wrap">

@@ -33,9 +33,6 @@ export default function Home() {
           </p>
         </div>
         <div className="space-y-4 text-base leading-relaxed text-neutral-600 dark:text-neutral-200 max-w-xl">
-          <p className="font-semibold text-neutral-800 dark:text-neutral-100">
-            5년차 프론트엔드 개발자. 공동창업 · 프론트엔드 챕터 리드 경험.
-          </p>
           <p>
             제품을 만들고 운영한 경험으로 기술 의사결정이 비즈니스 성과로
             이어지도록 합니다.

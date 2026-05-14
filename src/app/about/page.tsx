@@ -76,10 +76,6 @@ export default function AboutPage() {
           About
         </h2>
         <div className="space-y-4 text-sm text-neutral-600 dark:text-neutral-200 leading-relaxed">
-          {/* 한 줄 요약 */}
-          <p className="font-semibold text-neutral-800 dark:text-neutral-100">
-            5년차 프론트엔드 개발자. 공동창업 · 프론트엔드 챕터 리드 경험.
-          </p>
           {/* 가치관 */}
           <p>
             제품을 만들고 운영한 경험으로 기술 의사결정이 비즈니스 성과로
