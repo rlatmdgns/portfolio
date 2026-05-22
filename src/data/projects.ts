@@ -86,9 +86,9 @@ export const projects: Project[] = [
     },
     keyFeatures: [
       {
-        title: "3단계 계층(섹션 → 시퀀스 → 태스크) 온보딩 빌더",
+        title: "3-depth 중첩 구조(섹션 → 시퀀스 → 태스크) 온보딩 빌더",
         description:
-          "섹션-시퀀스-태스크의 3단계 계층 구조를 가진 다단계 폼 빌더. react-hook-form 비제어 폼 구조(ref 기반 register) + 중첩 useFieldArray로 3단계 계층 데이터를 관리하고, useWatch가 필요한 부분만 최소 필드 단위로 구독 격리. UI 상태(선택·포커스·drag)는 Zustand로 분리해 selector 구독을 최소화하고, stable key 재정렬 + React.memo로 리렌더를 차단.",
+          "섹션-시퀀스-태스크의 3-depth 중첩 구조를 가진 다단계 폼 빌더. react-hook-form 비제어 폼 구조(ref 기반 register) + 중첩 useFieldArray로 3-depth 중첩 데이터를 관리하고, useWatch가 필요한 부분만 최소 필드 단위로 구독 격리. UI 상태(선택·포커스·Drag)는 Zustand로 분리해 selector 구독을 최소화하고, stable key 재정렬 + React.memo로 리렌더를 차단.",
       },
       {
         title: "AI 온보딩 태스크 자동 생성",
@@ -124,11 +124,11 @@ export const projects: Project[] = [
     ],
     troubleshooting: [
       {
-        issue: "3단계 계층 폼에서 drag & drop 시 전체 리렌더링",
+        issue: "3-depth 중첩 구조 폼에서 Drag & Drop 시 전체 리렌더링",
         cause:
-          "두 가지 차원의 원인이 결합되어 있었습니다. (1) 폼 상태와 UI 상태(선택·포커스·drag)가 같은 컴포넌트 트리에서 관리되어 UI 상태 변경마다 form 구독 트리 전체가 리렌더되는 '도메인 결합' 문제. (2) drag로 항목 순서가 바뀔 때 index 기반 key 때문에 모든 컴포넌트의 key가 흔들려 unmount/mount가 발생하는 'reconciliation' 문제. React DevTools Profiler로 두 원인을 분리해 측정했습니다.",
+          "두 가지 차원의 원인이 결합되어 있었습니다. (1) 폼 상태와 UI 상태(선택·포커스·Drag)가 같은 컴포넌트 트리에서 관리되어 UI 상태 변경마다 form 구독 트리 전체가 리렌더되는 '도메인 결합' 문제. (2) Drag로 항목 순서가 바뀔 때 index 기반 key 때문에 모든 컴포넌트의 key가 흔들려 unmount/mount가 발생하는 'reconciliation' 문제. React DevTools Profiler로 두 원인을 분리해 측정했습니다.",
         solution:
-          "(1)에는 폼 상태와 UI 상태를 분리 — react-hook-form의 비제어 폼 구조(ref 기반 register) + 중첩 useFieldArray로 3단계 계층 데이터를 관리하고, useWatch가 필요한 부분만 최소 필드 단위로 구독을 격리. UI 상태는 Zustand로 분리해 selector 구독을 최소화. (2)에는 stable key(항목 고유 id) 기반 재정렬 + React.memo로 변경된 항목만 리렌더되도록 차단.",
+          "(1)에는 폼 상태와 UI 상태를 분리 — react-hook-form의 비제어 폼 구조(ref 기반 register) + 중첩 useFieldArray로 3-depth 중첩 데이터를 관리하고, useWatch가 필요한 부분만 최소 필드 단위로 구독을 격리. UI 상태는 Zustand로 분리해 selector 구독을 최소화. (2)에는 stable key(항목 고유 id) 기반 재정렬 + React.memo로 변경된 항목만 리렌더되도록 차단.",
       },
       {
         issue: "AI 동적 태스크 생성 시 LLM 응답 포맷 비일관성으로 인한 런타임 에러",
@@ -147,7 +147,7 @@ export const projects: Project[] = [
     ],
     results: [
       "상태 변경 영향 범위: 폼 트리 전체 → 변경 필드 단위로 축소",
-      "drag & drop 리렌더: 전체 트리 → 재정렬 항목 단위로 축소",
+      "Drag & Drop 리렌더: 전체 트리 → 재정렬 항목 단위로 축소",
       "FOUC 해소, 고객사별 브랜드 컬러 커스터마이징 안정화",
       "AI 초안 기반 빠른 구성으로 진입장벽 완화, AI 빌더 Sentry 모니터링 기준 미처리 런타임 에러 0건",
       "도입 고객사 인사담당자 자체 보고 기준, 신규 입사자 조기 퇴사율 도입 전 대비 약 15% 감소",
