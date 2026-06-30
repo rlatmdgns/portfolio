@@ -7,7 +7,7 @@ export const metadata = {
 const experiences = [
   {
     company: "리프웍스",
-    period: "2024.12 ~ 2026.03",
+    period: "2024.12 ~ 2026.05",
     role: "본인 포함 공동창업 3인 / 프론트엔드 전담",
     note: "공동창업",
   },
@@ -15,13 +15,13 @@ const experiences = [
     company: "풀랩",
     period: "2023.04 ~ 2024.12",
     role: "프론트엔드 챕터 리드",
-    note: "서비스 종료",
+    note: "회사 폐업",
   },
   {
     company: "하비풀",
     period: "2022.05 ~ 2023.02",
     role: "커머스팀 팀원",
-    note: "서비스 종료",
+    note: "회사 폐업",
   },
   {
     company: "아이오크롭스",
@@ -66,7 +66,7 @@ export default function AboutPage() {
           김승훈
         </h1>
         <p className="text-sm text-neutral-500 dark:text-neutral-300">
-          마주한 문제를 그냥 넘기지 않는 프론트엔드 개발자
+          문제를 구조와 사용자 경험으로 해결해 온 프론트엔드 개발자
         </p>
       </div>
 
@@ -85,7 +85,8 @@ export default function AboutPage() {
           <p>
             ATS SaaS에서는 챕터 리드로 Turborepo 모노레포 전환·FSD 도입을
             주도해 한 레포의 순환 참조 46%(131건 중 60건)를 제거했고,
-            SPA → Next.js 마이그레이션으로 LCP를 30% 개선했습니다(Lighthouse 기준).
+            SPA → Next.js 마이그레이션과 초기 로딩 최적화로
+            Lighthouse 기준 LCP를 약 30% 단축했습니다.
             검증·팀 내 공유를 거쳐 기술 도입을 합의 기반으로 이끌었습니다.
           </p>
           {/* 실적 요약 - 헬로보드 */}

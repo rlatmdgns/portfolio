@@ -30,6 +30,7 @@ export default async function ProjectDetailPage({
   const { slug } = await params;
   const project = projects.find((p) => p.slug === slug);
   if (!project) notFound();
+  const showArchitecture = slug === "helloboard" || slug === "stead";
 
   return (
     <div className="space-y-16">
@@ -65,6 +66,14 @@ export default async function ProjectDetailPage({
         <p className="text-xs text-neutral-500 dark:text-neutral-400">
           {project.period} · {project.role}
         </p>
+        <div className="flex gap-3 text-sm pt-1">
+          <span className="text-neutral-500 dark:text-neutral-400 shrink-0">
+            담당
+          </span>
+          <p className="text-neutral-700 dark:text-neutral-200">
+            {project.keyRole}
+          </p>
+        </div>
       </div>
 
       {/* Preview Image */}
@@ -94,91 +103,67 @@ export default async function ProjectDetailPage({
       </Section>
 
       {/* Architecture */}
-      <Section title="아키텍처">
-        <div className="space-y-4">
-          <p className="text-sm text-neutral-600 dark:text-neutral-200 leading-relaxed">
-            {project.architecture.description}
-          </p>
-          <MermaidDiagram chart={project.architecture.diagram} />
-        </div>
-      </Section>
+      {showArchitecture && (
+        <Section title="아키텍처">
+          <div className="space-y-4">
+            <p className="text-sm text-neutral-600 dark:text-neutral-200 leading-relaxed">
+              {project.architecture.description}
+            </p>
+            <MermaidDiagram chart={project.architecture.diagram} />
+          </div>
+        </Section>
+      )}
 
-      {/* Key Features */}
-      <Section title="핵심 기능">
-        <div className="space-y-5">
-          {project.keyFeatures.map((feature, i) => (
-            <div key={i} className="space-y-1.5">
-              <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-                {feature.title}
-              </h3>
-              <p className="text-sm text-neutral-600 dark:text-neutral-200 leading-relaxed">
-                {feature.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* Technical Decisions */}
-      <Section title="기술적 의사결정">
-        <div className="space-y-6">
-          {project.decisions.map((decision, i) => (
-            <div
-              key={i}
-              className="border border-neutral-200 dark:border-neutral-700 rounded-lg p-4 space-y-3"
+      <Section title="대표 문제 해결 사례">
+        <div className="space-y-8">
+          {project.caseStudies.map((item, i) => (
+            <article
+              key={item.title}
+              className="border border-neutral-200 dark:border-neutral-700 rounded-lg p-5 space-y-4"
             >
-              <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-                {decision.title}
-              </h3>
-              <div className="space-y-2">
-                <div className="flex gap-3 text-sm">
-                  <span className="text-neutral-500 dark:text-neutral-400 shrink-0 w-10">문제</span>
-                  <p className="text-neutral-600 dark:text-neutral-200 leading-relaxed">{decision.problem}</p>
-                </div>
-                <div className="flex gap-3 text-sm">
-                  <span className="text-neutral-500 dark:text-neutral-400 shrink-0 w-10">선택</span>
-                  <p className="text-neutral-600 dark:text-neutral-200 leading-relaxed">{decision.choice}</p>
-                </div>
+              <div className="flex items-start gap-3">
+                <span className="text-xs text-neutral-400 dark:text-neutral-500 pt-0.5">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                  {item.title}
+                </h3>
               </div>
-            </div>
+              <div className="space-y-3 pl-7">
+                <CaseRow label="문제·고민" value={item.problem} />
+                <CaseRow label="접근·판단" value={item.approach} />
+                <CaseRow label="해결" value={item.implementation} />
+                <CaseRow label="성과·검증" value={item.evidence} highlight />
+              </div>
+            </article>
           ))}
         </div>
       </Section>
+    </div>
+  );
+}
 
-      {/* Troubleshooting */}
-      <Section title="트러블슈팅">
-        <div className="space-y-6">
-          {project.troubleshooting.map((item, i) => (
-            <div key={i} className="space-y-3">
-              <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-                {item.issue}
-              </h3>
-              <div className="space-y-2 pl-4 border-l-2 border-neutral-200 dark:border-neutral-600">
-                <div className="flex gap-3 text-sm">
-                  <span className="text-neutral-500 dark:text-neutral-400 shrink-0 w-10">원인</span>
-                  <p className="text-neutral-600 dark:text-neutral-200 leading-relaxed">{item.cause}</p>
-                </div>
-                <div className="flex gap-3 text-sm">
-                  <span className="text-neutral-500 dark:text-neutral-400 shrink-0 w-10">해결</span>
-                  <p className="text-neutral-600 dark:text-neutral-200 leading-relaxed">{item.solution}</p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* Results */}
-      <Section title="성과">
-        <ul className="space-y-2">
-          {project.results.map((result, i) => (
-            <li key={i} className="flex gap-3 text-sm leading-relaxed">
-              <span className="text-emerald-500 shrink-0 mt-0.5 font-bold">↑</span>
-              <span className="text-neutral-700 dark:text-neutral-200 font-medium">{result}</span>
-            </li>
-          ))}
-        </ul>
-      </Section>
+function CaseRow({
+  label,
+  value,
+  highlight = false,
+}: {
+  label: string;
+  value: string;
+  highlight?: boolean;
+}) {
+  return (
+    <div className="grid gap-1.5 text-sm sm:grid-cols-[88px_1fr] sm:gap-4">
+      <span className="text-neutral-500 dark:text-neutral-400">{label}</span>
+      <p
+        className={`leading-relaxed ${
+          highlight
+            ? "font-medium text-neutral-900 dark:text-neutral-100"
+            : "text-neutral-600 dark:text-neutral-200"
+        }`}
+      >
+        {value}
+      </p>
     </div>
   );
 }

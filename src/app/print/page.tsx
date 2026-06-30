@@ -9,7 +9,7 @@ export const metadata = {
 const experiences = [
   {
     company: "리프웍스",
-    period: "2024.12 ~ 2026.03",
+    period: "2024.12 ~ 2026.05",
     role: "본인 포함 공동창업 3인 / 프론트엔드 전담",
     note: "공동창업",
   },
@@ -17,13 +17,13 @@ const experiences = [
     company: "풀랩",
     period: "2023.04 ~ 2024.12",
     role: "프론트엔드 챕터 리드",
-    note: "서비스 종료",
+    note: "회사 폐업",
   },
   {
     company: "하비풀",
     period: "2022.05 ~ 2023.02",
     role: "커머스팀 팀원",
-    note: "서비스 종료",
+    note: "회사 폐업",
   },
   {
     company: "아이오크롭스",
@@ -49,7 +49,7 @@ export default function PrintPage() {
         <p className="text-sm text-neutral-500">Frontend Developer · Portfolio</p>
         <h1 className="text-3xl font-bold tracking-tight">김승훈</h1>
         <p className="text-sm text-neutral-600">
-          마주한 문제를 그냥 넘기지 않는 프론트엔드 개발자
+          문제를 구조와 사용자 경험으로 해결해 온 프론트엔드 개발자
         </p>
         <dl className="pt-4 grid grid-cols-[80px_1fr] gap-y-1 text-sm">
           <dt className="text-neutral-500">Email</dt>
@@ -73,8 +73,8 @@ export default function PrintPage() {
           </p>
           <p>
             ATS SaaS에서는 챕터 리드로 Turborepo 모노레포 전환·FSD 도입을 주도해 한
-            레포의 순환 참조 46%(131건 중 60건)를 제거했고, SPA → Next.js 마이그레이션으로
-            LCP를 30% 개선했습니다(Lighthouse 기준). 검증·팀 내 공유를 거쳐 기술 도입을
+            레포의 순환 참조 46%(131건 중 60건)를 제거했고, SPA → Next.js 마이그레이션과
+            초기 로딩 최적화로 Lighthouse 기준 LCP를 약 30% 단축했습니다. 검증·팀 내 공유를 거쳐 기술 도입을
             합의 기반으로 이끌었습니다.
           </p>
           <p>
@@ -133,6 +133,10 @@ export default function PrintPage() {
             <p className="text-xs text-neutral-500">
               {project.period} · {project.role}
             </p>
+            <p className="text-sm text-neutral-700">
+              <span className="text-neutral-500">담당 </span>
+              {project.keyRole}
+            </p>
             <div className="flex flex-wrap gap-1.5 pt-1">
               {project.tags.map((tag) => (
                 <span
@@ -158,84 +162,27 @@ export default function PrintPage() {
             </div>
           </PrintSection>
 
-          <PrintSection title="아키텍처">
-            <p className="text-sm text-neutral-700 leading-relaxed">
-              {project.architecture.description}
-            </p>
-          </PrintSection>
-
-          <PrintSection title="핵심 기능">
+          <PrintSection title="대표 문제 해결 사례">
             <div className="space-y-3">
-              {project.keyFeatures.map((feature) => (
-                <div key={feature.title} className="space-y-1 break-inside-avoid">
+              {project.caseStudies.map((item) => (
+                <div key={item.title} className="space-y-1 break-inside-avoid">
                   <h4 className="text-sm font-semibold text-neutral-900">
-                    {feature.title}
+                    {item.title}
                   </h4>
                   <p className="text-sm text-neutral-700 leading-relaxed">
-                    {feature.description}
+                    {item.problem}
+                  </p>
+                  <p className="text-sm text-neutral-700 leading-relaxed">
+                    <span className="text-neutral-500">접근 </span>
+                    {item.approach}
+                  </p>
+                  <p className="text-sm font-medium text-neutral-900 leading-relaxed">
+                    <span className="text-neutral-500 font-normal">성과 </span>
+                    {item.evidence}
                   </p>
                 </div>
               ))}
             </div>
-          </PrintSection>
-
-          <PrintSection title="기술적 의사결정">
-            <div className="space-y-3">
-              {project.decisions.map((d) => (
-                <div
-                  key={d.title}
-                  className="border border-neutral-200 rounded p-3 space-y-2 break-inside-avoid"
-                >
-                  <h4 className="text-sm font-semibold text-neutral-900">
-                    {d.title}
-                  </h4>
-                  <div className="flex gap-3 text-sm">
-                    <span className="w-10 shrink-0 text-neutral-500">문제</span>
-                    <p className="text-neutral-700 leading-relaxed">{d.problem}</p>
-                  </div>
-                  <div className="flex gap-3 text-sm">
-                    <span className="w-10 shrink-0 text-neutral-500">선택</span>
-                    <p className="text-neutral-700 leading-relaxed">{d.choice}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </PrintSection>
-
-          <PrintSection title="트러블슈팅">
-            <div className="space-y-4">
-              {project.troubleshooting.map((t) => (
-                <div key={t.issue} className="space-y-2 break-inside-avoid">
-                  <h4 className="text-sm font-semibold text-neutral-900">
-                    {t.issue}
-                  </h4>
-                  <div className="pl-3 border-l-2 border-neutral-200 space-y-2">
-                    <div className="flex gap-3 text-sm">
-                      <span className="w-10 shrink-0 text-neutral-500">원인</span>
-                      <p className="text-neutral-700 leading-relaxed">{t.cause}</p>
-                    </div>
-                    <div className="flex gap-3 text-sm">
-                      <span className="w-10 shrink-0 text-neutral-500">해결</span>
-                      <p className="text-neutral-700 leading-relaxed">{t.solution}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </PrintSection>
-
-          <PrintSection title="성과">
-            <ul className="space-y-1.5">
-              {project.results.map((r) => (
-                <li
-                  key={r}
-                  className="flex gap-2 text-sm text-neutral-800 leading-relaxed"
-                >
-                  <span className="text-neutral-500 shrink-0">·</span>
-                  <span>{r}</span>
-                </li>
-              ))}
-            </ul>
           </PrintSection>
         </article>
       ))}
