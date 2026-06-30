@@ -248,7 +248,7 @@ export const projects: Project[] = [
     ],
     architecture: {
       description:
-        "Turborepo 기반 모노레포로 채용팀(apps/web)과 지원자(apps/recruit), 공통 UI(packages/ui) 세 개의 패키지를 하나의 레포에서 관리. apps/web은 화면 수가 많고 도메인이 복잡해 FSD(Feature-Sliced Design) 레이어 구조(pages → widgets → features → entities → shared 단방향 참조 — 상위 레이어가 하위 레이어를 참조)를 적용했고, apps/recruit는 화면 수가 적어 FSD 풀버전 대신 modules 단일 레이어로 가볍게 유지했습니다. eslint-plugin-boundaries로 레이어 간 잘못된 참조를 빌드 타임에 자동 감지합니다.",
+        "Turborepo 기반 모노레포로 채용팀(apps/web)과 지원자(apps/recruit), 공통 UI(packages/ui) 세 개의 패키지를 하나의 레포에서 관리. apps/web은 화면 수가 많고 도메인이 복잡해 FSD(Feature-Sliced Design) 레이어 구조(pages → widgets → features → entities → shared 단방향 참조 — 상위 레이어가 하위 레이어를 참조)를 적용했고, apps/recruit는 apps → features → shared 3개 레이어로 구성했습니다. eslint-plugin-boundaries로 레이어 간 잘못된 참조를 빌드 타임에 자동 감지합니다.",
       diagram: `graph TD
   subgraph "Turborepo"
     subgraph "apps/web 채용팀"
@@ -258,7 +258,7 @@ export const projects: Project[] = [
       W4 --> W5[shared]
     end
     subgraph "apps/recruit 지원자"
-      R1[pages] --> R2[modules]
+      R1[apps] --> R2[features]
       R2 --> R3[shared]
     end
     subgraph "packages/ui"
